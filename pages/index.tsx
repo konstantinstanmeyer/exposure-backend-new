@@ -3,10 +3,14 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { authSliceState } from '../features/auth/authSlice'
 import { useEffect } from 'react'
-import { useSelector, TypedUseSelectorHook } from 'react-redux'
+import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
+import axios from 'axios'
+import { AppDispatch } from '@/src/store'
 
 export default function Home() {
   const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   console.log(username);
 
@@ -16,10 +20,23 @@ export default function Home() {
         if(localStorage.getItem("username")){
           console.log("yes");
         } else {
+          axios.post('http://localhost:3001/login', {
+            email: "asdoiajsd",
+            password: "iuahhf"
+          })
+          .then(res => {
+            localStorage.setItem('username', res.data.username);
+            dispatch(setUsername(res.data.username))
+          })
+          .catch(err => console.log(err));
           console.log("no");
         }
       }
     )();
+
+    return () => {
+      console.log("yes")
+    }
   }, [])
 
   return (

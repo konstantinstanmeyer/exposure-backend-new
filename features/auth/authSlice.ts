@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { defaultState } from '@/src/store';
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3001/'
@@ -25,9 +26,9 @@ export const postAuth = createAsyncThunk('users/fetchAuth', async () => {
             password: "iuahhf"
         })
         return response.data;
-})
+});
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
@@ -37,10 +38,8 @@ export const authSlice = createSlice({
             const username = localStorage.getItem('username');
             state.username = username;
         },
-        login: (state, action: PayloadAction<any>) => {
-            const email = action.payload.email;
-            const password = action.payload.password;
-
+        setUsername: (state: defaultState, action: PayloadAction<String>) => {
+            state.auth.username = action.payload;
         },
     },
     // extraReducers(builder){
