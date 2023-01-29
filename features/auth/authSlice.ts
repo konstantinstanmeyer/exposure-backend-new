@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { defaultState } from '@/src/store';
 import axios from 'axios';
+import { GlobalDefault } from '@/src/store';
 
 const BASE_URL = 'http://localhost:3001/'
 
@@ -38,7 +38,7 @@ const authSlice = createSlice({
             const username = localStorage.getItem('username');
             state.username = username;
         },
-        setUsername: (state: defaultState, action: PayloadAction<String>) => {
+        setUsername: (state: GlobalDefault, action: PayloadAction<String>) => {
             state.auth.username = action.payload;
         },
     },

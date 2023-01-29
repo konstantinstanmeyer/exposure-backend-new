@@ -1,16 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import { authSliceState } from '../features/auth/authSlice'
 import { useEffect } from 'react'
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { AppDispatch } from '@/src/store'
+import { AppDispatch } from '../src/store'
 
 export default function Home() {
   const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = () => useDispatch<AppDispatch>();
 
   console.log(username);
 
