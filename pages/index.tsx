@@ -1,8 +1,27 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
+import { authSliceState } from '../features/auth/authSlice'
+import { useEffect } from 'react'
+import { useSelector, TypedUseSelectorHook } from 'react-redux'
 
 export default function Home() {
+  const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+
+  console.log(username);
+
+  useEffect(() => {
+    (
+      async() => {
+        if(localStorage.getItem("username")){
+          console.log("yes");
+        } else {
+          console.log("no");
+        }
+      }
+    )();
+  }, [])
+
   return (
     <>
       <Head>

@@ -1,12 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const token = localStorage.getItem('token') as string | null;
-const username: String | null = localStorage.getItem('username');
-
 const BASE_URL = 'http://localhost:3001/'
 
-interface authSliceState {
+export interface authSliceState {
     username: String | null,
     token: String | null,
     isLoading: Boolean,
@@ -15,8 +12,8 @@ interface authSliceState {
 }
 
 const initialState: authSliceState = {
-    username: username,
-    token: token ? token : null,
+    username: null,
+    token: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
