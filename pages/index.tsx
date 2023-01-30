@@ -3,11 +3,12 @@ import { useEffect } from 'react'
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { AppDispatch } from '../src/store'
+import { setUsername } from '@/features/auth/authSlice'
 
 export default function Home() {
   const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
 
-  const dispatch = () => useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
   console.log(username);
 
@@ -23,8 +24,8 @@ export default function Home() {
           })
           .then(res => {
             localStorage.setItem('username', res.data.username);
-            dispatch(setUsername(res.data.username))
-          })
+            useDispatch(setUsername("yes"))
+          })  
           .catch(err => console.log(err));
           console.log("no");
         }

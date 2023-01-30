@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { GlobalDefault } from '@/src/store';
 
-const BASE_URL = 'http://localhost:3001/'
+const BASE_URL = 'http://localhost:3001'
 
 export interface authSliceState {
     username: String | null,
@@ -21,7 +20,7 @@ const initialState: authSliceState = {
 }
 
 export const postAuth = createAsyncThunk('users/fetchAuth', async () => {  
-        const response = await axios.post('/login', {
+        const response = await axios.post(BASE_URL + '/login', {
             email: "asdoiajsd",
             password: "iuahhf"
         })
@@ -32,19 +31,18 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        setStatus: (state) => {
-            if(!localStorage.getItem("username")) return;
-
-            const username = localStorage.getItem('username');
-            state.username = username;
+        login: (state: any, action: PayloadAction<Object>) => {
+            state.token 
         },
-        setUsername: (state: GlobalDefault, action: PayloadAction<String>) => {
-            state.auth.username = action.payload;
+        setUsername: (state: any, action: PayloadAction<String>) => {   
+            console.log(action.payload + "working");
+            state.username = action.payload;
         },
-    },
-    // extraReducers(builder){
-    //     builder.addCase(postAuth.pending, (state))
-    // }
+    }
 })
+
+console.log("hello", authSlice.reducer, "yes")
+
+export const { setUsername } = authSlice.actions;
 
 export default authSlice.reducer;
