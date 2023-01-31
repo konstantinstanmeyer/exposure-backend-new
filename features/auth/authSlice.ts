@@ -31,18 +31,19 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        login: (state: any, action: PayloadAction<Object>) => {
-            state.token 
+        login: (state: authSliceState, action: PayloadAction<any>) => {
+            state.token = action.payload.token;
+            state.username = action.payload.username;
         },
-        setUsername: (state: any, action: PayloadAction<String>) => {   
-            console.log(action.payload + "working");
+        setUsername: (state: authSliceState, action: PayloadAction<String>) => {   
             state.username = action.payload;
+        },
+        setToken: (state: authSliceState, action: PayloadAction<String>) => {   
+            state.token = action.payload;
         },
     }
 })
 
-console.log("hello", authSlice.reducer, "yes")
-
-export const { setUsername } = authSlice.actions;
+export const { setUsername, setToken } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -3,20 +3,22 @@ import { useEffect } from 'react'
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { AppDispatch } from '../src/store'
-import { setUsername } from '@/features/auth/authSlice'
+import { setUsername, setToken } from '@/features/auth/authSlice'
 
 export default function Home() {
-  const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+  // const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
 
   const dispatch = useDispatch<AppDispatch>();
-
-  console.log(username);
 
   useEffect(() => {
     (
       async() => {
-        if(localStorage.getItem("username")){
-          console.log("yes");
+        const username = localStorage.getItem('username');
+        const token = localStorage.getItem('token');
+
+        if(username && token){
+          dispatch(setUsername(username));
+          dispatch(setToken(token));
         } else {
           axios.post('http://localhost:3001/login', {
             email: "asdoiajsd",
@@ -24,7 +26,7 @@ export default function Home() {
           })
           .then(res => {
             localStorage.setItem('username', res.data.username);
-            useDispatch(setUsername("yes"))
+            dispatch(setUsername("yes"))
           })  
           .catch(err => console.log(err));
           console.log("no");
