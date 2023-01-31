@@ -6,36 +6,34 @@ import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
 
 export default function Home() {
-  // const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+  const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    (
-      async() => {
-        const username = localStorage.getItem('username');
-        const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    const token = localStorage.getItem('token');
 
-        if(username && token){
-          dispatch(setUsername(username));
-          dispatch(setToken(token));
-        } else {
-          axios.post('http://localhost:3001/login', {
-            email: "asdoiajsd",
-            password: "iuahhf"
-          })
-          .then(res => {
-            localStorage.setItem('username', res.data.username);
-            dispatch(setUsername("yes"))
-          })  
-          .catch(err => console.log(err));
-          console.log("no");
-        }
-      }
-    )();
+    if(username && token){
+      dispatch(setUsername(username));
+      dispatch(setToken(token));
+    } else {
+      axios.post('http://localhost:3001/login', {
+        email: "asdoiajsd",
+        password: "iuahhf"
+      })
+      .then(res => {
+        localStorage.setItem('username', res.data.username);
+        localStorage.setItem('token', res.data.token);
+
+        dispatch(setUsername(res.data.username));
+        dispatch(setToken(res.data.token));
+      })
+      .catch(err => console.log(err));
+    }
 
     return () => {
-      console.log("yes")
+      // nothing
     }
   }, [])
 
@@ -48,7 +46,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        hello
+        {`${usernameState}`}
       </div>
     </>
   )
