@@ -30,10 +30,9 @@ export default function Post(){
         e.preventDefault();
 
         const key = await uploadToS3(e);
+        // console.log(key);
 
-        console.log(key)
-
-        const response = axios.post('http://localhost:3001/post', {
+        const response = await axios.post('http://localhost:3001/post', {
             genre: genre,
             category: category,
             description: description,

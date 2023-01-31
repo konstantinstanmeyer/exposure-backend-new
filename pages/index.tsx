@@ -4,9 +4,12 @@ import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
+import { useRouter } from 'next/router'
 
 export default function Home() {
   const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -18,18 +21,7 @@ export default function Home() {
       dispatch(setUsername(username));
       dispatch(setToken(token));
     } else {
-      axios.post('http://localhost:3001/login', {
-        email: "asdoiajsd",
-        password: "iuahhf"
-      })
-      .then(res => {
-        localStorage.setItem('username', res.data.username);
-        localStorage.setItem('token', res.data.token);
-
-        dispatch(setUsername(res.data.username));
-        dispatch(setToken(res.data.token));
-      })
-      .catch(err => console.log(err));
+      router.push('/login');
     }
 
     return () => {
@@ -45,8 +37,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        {`${usernameState}`}
+      <div className="">
+        
       </div>
     </>
   )
