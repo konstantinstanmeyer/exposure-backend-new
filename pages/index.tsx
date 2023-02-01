@@ -5,6 +5,7 @@ import axios from 'axios'
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
 import { useRouter } from 'next/router'
+import Navbar from '@/components/Navbar'
 
 export default function Home() {
   const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
@@ -38,7 +39,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="">
-        {`${usernameState}`}
+        <Navbar />
+        <p>{`${usernameState}`}</p>
       </div>
     </>
   )
