@@ -66,7 +66,7 @@ export default function Login(){
                     <input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="password..." className="bg-gray-200 placeholder-gray-600 m-2 !outline-none rounded-sm indent-2 h-1/4" />
                     <div className="h-1/2 flex items-center justify-center">
                         <button className="bg-gray-500 transition-all rounded-md duration-300 h-1/2 font-bold w-4/5 mx-auto hover:bg-gray-600 relative">
-                            Sign In
+                            Sign Up
                         </button>
                     </div>
                 </form>
