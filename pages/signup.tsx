@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { AppDispatch } from '../src/store'
 import { AxiosResponse } from "axios"
 import { setUsername, setToken } from '@/features/auth/authSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 import Link from 'next/link'
 
 //         email: "asdoiajsd",
@@ -14,7 +14,10 @@ export default function Signup(){
     const [email, setEmail] = useState<any>("");
     const [password, setPassword] = useState<any>("");
     const [confirmPassword, setConfirmPassword] = useState<any>("");
-    const [error, setError] = useState<String>("");
+    const [error, setError] = useState<null | String>(null);
+
+    const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+    const tokenState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
 
     const router = useRouter();
 
@@ -62,6 +65,8 @@ export default function Signup(){
         }
     }
 
+    if (usernameState !== null && tokenState !== null) router.push('/');
+
     return (
         <div className="w-screen h-screen relative justify-center items-center flex">
             <div className="bg-gray-400 w-1/5 h-1/2 rounded-lg flex flex-col justify-center relative">
@@ -80,6 +85,10 @@ export default function Signup(){
                 </form>
                 <Link href="/login" className="absolute text-gray-300 hover:underline -bottom-10 w-full md:text-sm text-center sm:text-xs">Already have an account? Log in!</Link>
             </div>
+            <div className="absolute bg-white h-20 w-20">
+                <p></p>
+
+            </div> 
         </div>
     )
 }

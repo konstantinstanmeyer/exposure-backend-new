@@ -3,7 +3,7 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 import Link from "next/link"
 
 //         email: "asdoiajsd",
@@ -13,6 +13,9 @@ export default function Login(){
     const [email, setEmail] = useState<any>("");
     const [password, setPassword] = useState<any>("");
     const [error, setError] = useState<String>("");
+
+    const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+    const tokenState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
 
     const router = useRouter();
 
@@ -52,6 +55,8 @@ export default function Login(){
             setError("Authentication Failed");
         }
     }
+
+    if (usernameState !== null && tokenState !== null) router.push('/');
 
     return (
         <div className="w-screen h-screen relative justify-center items-center flex">
