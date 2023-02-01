@@ -4,14 +4,14 @@ import { useRouter } from "next/router"
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
 import { useDispatch } from 'react-redux'
-import Link from "next/link"
 
 //         email: "asdoiajsd",
 //         password: "iuahhf"
 
-export default function Login(){
+export default function Signup(){
     const [email, setEmail] = useState<any>("");
     const [password, setPassword] = useState<any>("");
+    const [confirmPassword, setConfirmPassword] = useState<any>("");
     const [error, setError] = useState<String>("");
 
     const router = useRouter();
@@ -57,7 +57,7 @@ export default function Login(){
 
     return (
         <div className="w-screen h-screen relative justify-center items-center flex">
-            <div className="bg-gray-400 w-1/5 h-1/3 rounded-lg flex flex-col justify-center relative">
+            <div className="bg-gray-400 w-1/5 h-1/2 rounded-lg flex flex-col justify-center relative">
                 <div className="h-1/3 flex items-center justify-center">
                     <h2 className="mx-auto text-center font-bold md:w-2/3 md:text-2xl sm:text-sm mt-2">Welcome to Exposure</h2>
                 </div>
@@ -70,7 +70,6 @@ export default function Login(){
                         </button>
                     </div>
                 </form>
-                <Link href="/signup" className="absolute text-gray-300 hover:underline -bottom-10 w-full md:text-sm text-center sm:text-xs">Don't have an account? Sign up!</Link>
             </div>
         </div>
     )
