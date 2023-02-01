@@ -37,7 +37,7 @@ export default function Signup(){
         let response: AxiosResponse;
 
         if(password === confirmPassword){
-            response = await axios.post("http://localhost:3001/login", {
+            response = await axios.post("http://localhost:3001/signup", {
             email: email,
             password: password
             })
@@ -61,8 +61,6 @@ export default function Signup(){
             setError("Authentication Failed");
         }
     }
-
-    console.log(error)
 
     return (
         <div className="w-screen h-screen relative justify-center items-center flex">
