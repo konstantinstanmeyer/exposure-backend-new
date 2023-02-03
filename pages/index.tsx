@@ -36,7 +36,8 @@ export default function Home() {
       dispatch(setToken(token));
 
       axios.get('http://localhost:3001/categories')
-      .then(res => setCategories(res.data));
+      .then(res => setCategories(res.data))
+      .catch(err => setError(err));
     } else {
       router.push('/login');
     }
@@ -45,8 +46,6 @@ export default function Home() {
       // nothing
     }
   }, [])
-
-  console.log(categories)
 
   return (
     <>
@@ -59,22 +58,23 @@ export default function Home() {
       <div className="relative">
         <Navbar />
         {isLoading ? <Loading /> : 
-          <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 w-3/5 mx-auto mt-28">
+          <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 w-3/5 mx-auto mt-32">
             {categories && !isLoading ? categories.map(c =>     
-              <Link href={`/category/${c.name}`} className={`bg-gray-300 h-72 flex items-center justify-center relative w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}>
+              <Link href={`/category/${c.name}`} className={`bg-gray-gray-900 transitional-all duration-300 hover:opacity-60 h-72 flex items-center justify-center relative w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}>
                <img className="h-full w-full object-cover rounded-md" src={`${c.imageUrl}`}/>
-                <div className="bg-white/20 backdrop-blur-md absolute w-32 min:h-5 rounded-md">
+                <div className="bg-white/30 backdrop-blur-md absolute w-32 min:h-5 rounded-md">
                   <p className="font-bold text-center mx-3 break-all py-1">{`${c.name}`}</p>
                 </div>
               </Link> 
             ) : null}
           </div>
         }
-        <p>{`${usernameState}`}</p>
+        {error ? 
         <div className="fixed w-1/5 bg-red-700 rounded-lg h-fit z-40 mx-auto left-[40%] bottom-10">
-          <p className="text-center mx-6 py-3 font-bold font-mono select-none">hello this is the very l</p>
-          <p className="absolute top-1 right-3 rotate-45 font-bold text-xl hover:cursor-pointer">+</p>
-        </div> 
+          <p className="text-center mx-6 py-3 font-bold font-mono select-none">{error}</p>
+          <p onClick={() => setError(null)} className="absolute top-1 right-3 rotate-45 font-bold text-xl hover:cursor-pointer">+</p>
+        </div>
+        : null }
       </div>
     </>
   )
