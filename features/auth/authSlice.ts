@@ -35,10 +35,10 @@ const authSlice = createSlice({
             state.token = action.payload.token;
             state.username = action.payload.username;
         },
-        setUsername: (state: authSliceState, action: PayloadAction<String>) => {   
+        setUsername: (state: authSliceState, action: PayloadAction<String | null>) => {   
             state.username = action.payload;
         },
-        setToken: (state: authSliceState, action: PayloadAction<String>) => {   
+        setToken: (state: authSliceState, action: PayloadAction<String | null>) => {   
             state.token = action.payload;
         },
     }

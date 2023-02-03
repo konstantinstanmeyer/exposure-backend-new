@@ -1,14 +1,22 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useSelector, TypedUseSelectorHook } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../src/store'
+import { setUsername, setToken } from '@/features/auth/authSlice'
 
 export default function Navbar(){
-    const username: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+    const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter();
 
     async function handleLogout(){
-        
+        dispatch(setUsername(null));
+        dispatch(setToken(null));
+
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+
+        router.push('/login');
     }
 
     return(
@@ -20,8 +28,8 @@ export default function Navbar(){
             <Link className="ml-auto mx-3 text-gray-300 font-bold mb-1 hover:bg-gray-700 transition-all duration-300 rounded-full px-3 py-1" href="/post">+</Link>
             <Link href="/discover" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">discover</Link>
             <Link href="/friends" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">friends</Link>
-            <Link href="/discover" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">log out</Link>
-            <img onClick={username ? () => router.push(`/user/${username}`) : undefined} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="profile.png" />
+            <p onClick={() => handleLogout()} className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline hover:cursor-pointer">log out</p>
+            <img onClick={() => router.push(`/profile`)} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="profile.png" />
         </div>
     )
 }
