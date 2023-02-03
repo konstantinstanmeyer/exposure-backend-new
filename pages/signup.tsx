@@ -85,10 +85,6 @@ export default function Signup(){
                 </form>
                 <Link href="/login" className="absolute text-gray-300 hover:underline -bottom-10 w-full md:text-sm text-center sm:text-xs">Already have an account? Log in!</Link>
             </div>
-            <div className="absolute bg-white h-20 w-20">
-                <p></p>
-
-            </div> 
         </div>
     )
 }

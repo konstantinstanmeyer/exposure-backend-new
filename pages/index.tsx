@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar'
 export default function Home() {
   const [error, setError] = useState<null | String>(null);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [categories, setCategories] = useState<Array<String>>([]);
 
   const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
 
@@ -26,6 +27,9 @@ export default function Home() {
     if(username && token){
       dispatch(setUsername(username));
       dispatch(setToken(token));
+
+      axios.get('http://localhost:3001/categories')
+      .then(res => setCategories(res.data));
     } else {
       router.push('/login');
     }
@@ -34,6 +38,8 @@ export default function Home() {
       // nothing
     }
   }, [])
+
+  console.log(categories)
 
   return (
     <>
