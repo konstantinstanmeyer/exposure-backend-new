@@ -8,11 +8,18 @@ import { setUsername, setToken } from '@/features/auth/authSlice'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
+import Category from './category'
+
+interface Category {
+  name: String;
+  imageUrl: String;
+}
+
 
 export default function Home() {
   const [error, setError] = useState<null | String>(null);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
-  const [categories, setCategories] = useState<Array<String>>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [categories, setCategories] = useState<Array<Category>>([]);
 
   const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
 
@@ -53,19 +60,14 @@ export default function Home() {
         <Navbar />
         {isLoading ? <Loading /> : 
           <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 w-3/5 mx-auto mt-28">
-            <Link href="/category/??" className={`bg-gray-300 h-72 flex items-center justify-center relative w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}>
-              {isLoading ? null : <img src="https://images.unsplash.com/photo-1588786849373-642245e7bd15?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" className="w-[95%] bg-black h-[95%] rounded-md object-cover"></img>}
-              <div className="bg-white/20 backdrop-blur-md absolute w-32 min:h-5">
-                <p className="font-bold text-center mx-3 break-all py-1">contemporary art</p>
-              </div>
-            </Link>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
-            <div className={`bg-gray-300 h-72 w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}></div>
+            {categories && !isLoading ? categories.map(c =>     
+              <Link href={`/category/${c.name}`} className={`bg-gray-300 h-72 flex items-center justify-center relative w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}>
+               <img className="h-full w-full object-cover rounded-md" src={`${c.imageUrl}`}/>
+                <div className="bg-white/20 backdrop-blur-md absolute w-32 min:h-5 rounded-md">
+                  <p className="font-bold text-center mx-3 break-all py-1">{`${c.name}`}</p>
+                </div>
+              </Link> 
+            ) : null}
           </div>
         }
         <p>{`${usernameState}`}</p>
