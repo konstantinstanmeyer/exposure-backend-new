@@ -3,8 +3,9 @@ import { useState, ChangeEvent, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Category(){
-    const [category, setCategory] = useState("")
-    const [imageUrl, setImageUrl] = useState("")
+    const [category, setCategory] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [obscurity, setObscurity] = useState(1);
     let categoryName;
 
     const router = useRouter();
@@ -23,7 +24,8 @@ export default function Category(){
         axios.post('http://localhost:3001/add-sub-category', {
             name: category,
             imageUrl: imageUrl,
-            category: "Farming"
+            category: "Farming",
+            obscurity: obscurity
         }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
     }
 
@@ -32,6 +34,7 @@ export default function Category(){
             <form onSubmit={submitSubCategory}>
                 <input value={category} onChange={(e) => setCategory(e.target.value)} />
                 <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                <input type="number" value={obscurity} onChange={(e) => setObscurity(e.target.value)} />
                 <button className="text-white" type="submit">submit</button>
             </form>
         </div>

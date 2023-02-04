@@ -19,6 +19,7 @@ export default function Category(){
         <div className="relative w-full h-screen">
             <Navbar />
             <div className="bg-white">
+                
             </div>
         </div>
     )
