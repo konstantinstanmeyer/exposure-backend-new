@@ -15,7 +15,7 @@ export default function Category(){
         if (!categoryName) router.push('/');
     }, [])
 
-    async function submitCategory(e: ChangeEvent<HTMLFormElement>){
+    async function submitSubCategory(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();
 
         axios.post('http://localhost:3001/add-sub-category', {
@@ -27,7 +27,7 @@ export default function Category(){
 
     return(
         <div>
-            <form onSubmit={submitCategory}>
+            <form onSubmit={submitSubCategory}>
                 <input value={category} onChange={(e) => setCategory(e.target.value)} />
                 <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
                 <button className="text-white" type="submit">submit</button>
