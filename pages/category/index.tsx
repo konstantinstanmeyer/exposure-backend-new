@@ -1,4 +1,5 @@
 import axios from "axios";
+import Navbar from '@/components/Navbar'
 import { ChangeEvent, useState } from "react"
 
 export default function Category(){
@@ -15,12 +16,10 @@ export default function Category(){
     }
 
     return(
-        <div>
-            <form onSubmit={submitCategory}>
-                <input value={category} onChange={(e) => setCategory(e.target.value)} />
-                <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-                <button className="text-white" type="submit">submit</button>
-            </form>
+        <div className="relative w-full h-screen">
+            <Navbar />
+            <div className="bg-white">
+            </div>
         </div>
     )
 }

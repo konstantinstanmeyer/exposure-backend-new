@@ -27,7 +27,7 @@ export default function Navbar(){
             </div>
             <Link className="ml-auto mx-3 text-gray-300 font-bold mb-1 hover:bg-gray-700 transition-all duration-300 rounded-full px-3 py-1" href="/post">+</Link>
             <Link href="/discover" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">discover</Link>
-            <Link href="/friends" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">friends</Link>
+            <Link href="/friends" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">suggest</Link>
             <p onClick={() => handleLogout()} className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline hover:cursor-pointer">log out</p>
             <img onClick={() => router.push(`/profile`)} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="profile.png" />
         </div>

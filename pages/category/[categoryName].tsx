@@ -9,6 +9,8 @@ export default function Category(){
 
     const router = useRouter();
 
+    console.log(router.pathname)
+
     useEffect(() => {
         categoryName = router.query?.categoryName;
 
