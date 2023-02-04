@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
 import axios from 'axios'
 import Loading from '../components/Loading'
-import { AppDispatch } from '../src/store'
+import { AppDispatch, RootState } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -20,15 +20,14 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [categories, setCategories] = useState<Array<Category>>([]);
 
-  const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
+  const username = useSelector((state: any) =>  state.auth.username);
+  const token = useSelector((state: any) =>  state.auth.token);
 
   const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    const token = localStorage.getItem('token');
 
     if(username && token){
       dispatch(setUsername(username));

@@ -9,4 +9,4 @@ export const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch;
 
-export type GlobalDefault = typeof store.getState;
+export type RootState = typeof store.getState;
