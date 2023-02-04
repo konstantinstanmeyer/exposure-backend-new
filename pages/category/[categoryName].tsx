@@ -1,30 +1,50 @@
 import { useRouter } from 'next/router'
 import { useState, ChangeEvent, useEffect } from 'react';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import axios from 'axios';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
+
+interface subCategory {
+
+}
 
 export default function Category(){
     const [category, setCategory] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [obscurity, setObscurity] = useState<string | number | readonly string[] | undefined>(1);
     const [isLoading, setIsLoading] = useState<Boolean>(false);
-    let categoryName;
+    const [page, setPage] = useState(1);
+    const [subs, setSubs] = useState<Array<any>>([]);
+    const token: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
+    let categoryName: string | undefined | string[];
 
     const router = useRouter();
 
-    console.log(router.pathname)
+    console.log(router)
 
     useEffect(() => {
+        setIsLoading(true);
         categoryName = router.query?.categoryName;
 
         if (!categoryName) router.push('/');
-    }, [])
+
+        (async() => {
+            const { data } = await axios.get(`http://localhost:3001/sub-categories/${categoryName}/${page}`, { headers: {"Authorization": `Bearer ${token}`} });
+            setSubs(data.subs)
+            setIsLoading(false);
+        })();
+    }, [page]);
+
+    async function fetch(){
+        const { data } = await axios.get(`http://localhost:3001/sub-categories/${categoryName}/${page}`, { headers: {"Authorization": `Bearer ${token}`} });
+        console.log(data);
+    }
 
     async function submitCategory(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();
 
-        axios.post('http://localhost:3001/add-category', {
+        const response = await axios.post('http://localhost:3001/add-category', {
             name: category,
             imageUrl: imageUrl,
         }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
@@ -33,7 +53,7 @@ export default function Category(){
     async function submitSubCategory(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();
 
-        axios.post('http://localhost:3001/add-sub-category', {
+        const response = await axios.post('http://localhost:3001/add-sub-category', {
             name: category,
             imageUrl: imageUrl,
             category: "Farming",
@@ -45,24 +65,26 @@ export default function Category(){
         <div className="relative w-screen">
             <Navbar />
             <div className="w-1/2 mt-20 grid grid-cols-2 mx-auto relative">
-                <Link href="/hello" className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
-                    <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>equipment</p>
-                    <img src={isLoading ? "" : "https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80"} className={`w-full h-full rounded-full object-cover h-full`} />
-                </Link>
-                <Link href="/hello" className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
-                    <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>equipment</p>
-                    <img src={isLoading ? "" : "https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80"} className={`w-full h-full rounded-full object-cover h-full`} />
-                </Link>
-                <Link href="/hello" className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
-                    <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>equipment</p>
-                    <img src={isLoading ? "" : "https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80"} className={`w-full h-full rounded-full object-cover h-full`} />
-                </Link>
-                <Link href="/hello" className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
-                    <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>equipment</p>
-                    <img src={isLoading ? "" : "https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1989&q=80"} className={`w-full h-full rounded-full object-cover h-full`} />
-                </Link>
+                {subs.length > 0 ? subs.map((sub, i) => 
+                    <Link href={`/category/sub/${sub.name}`} id={`${sub.name + i.toString()}`} className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{sub.name}</p>
+                        {isLoading ? null : <img src={sub.imageUrl} className={`w-full rounded-full object-cover h-full bg-gray-600`} />}
+                    </Link>
+                ) :
+                <>
+                    <div className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>.</p>
+                    </div>
+                    <div className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>.</p>
+                    </div>
+                </>}
             </div>
-            <p className="text-white text-center mt-14">hello</p>
+            <div className="mt-14 bg-gray-800 w-32 h-10 mx-auto rounded-md flex flex-row items-center">
+                <p onClick={() => setPage(page => page-1)} className="mx-auto font-extrabold text-gray-300 hover:cursor-pointer">{'<'}</p>
+                <p className="mx-auto text-gray-300 select-none">{`${page}`}</p>
+                <p onClick={() => setPage(page => page+1)} className="mx-auto font-extrabold text-gray-300 hover:cursor-pointer">{'>'}</p>
+            </div>
         </div>
     )
 }
