@@ -23,16 +23,21 @@ export default function Home() {
   const username = useSelector((state: any) =>  state.auth.username);
   const token = useSelector((state: any) =>  state.auth.token);
 
-  const router = useRouter();
-
   const dispatch = useDispatch<AppDispatch>();
 
+
+  const router = useRouter();
+
   useEffect(() => {
+    const localUsername = localStorage.getItem('username');
+    const localToken = localStorage.getItem('token');
+
+    if (localUsername && localToken) {
+      dispatch(setUsername(localUsername))
+      dispatch(setToken(localToken));
+    } 
 
     if(username && token){
-      dispatch(setUsername(username));
-      dispatch(setToken(token));
-
       axios.get('http://localhost:3001/categories')
       .then(res => setCategories(res.data))
       .catch(err => setError(err));

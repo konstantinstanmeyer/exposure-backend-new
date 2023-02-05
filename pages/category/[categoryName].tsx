@@ -17,7 +17,7 @@ export default function Category(){
     const [page, setPage] = useState(1);
     const [subs, setSubs] = useState<Array<any>>([]);
     const token: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
-    let categoryName: string | undefined | string[];
+    let categoryName: undefined | string | string[];
 
     const router = useRouter();
 
@@ -26,8 +26,6 @@ export default function Category(){
     useEffect(() => {
         setIsLoading(true);
         categoryName = router.query?.categoryName;
-
-        if (!categoryName) router.push('/');
 
         (async() => {
             const { data } = await axios.get(`http://localhost:3001/sub-categories/${categoryName}/${page}`, { headers: {"Authorization": `Bearer ${token}`} });
@@ -66,7 +64,7 @@ export default function Category(){
             <Navbar />
             <div className="w-1/2 mt-20 grid grid-cols-2 mx-auto relative">
                 {subs.length > 0 ? subs.map((sub, i) => 
-                    <Link href={`/category/sub/${sub.name}`} id={`${sub.name + i.toString()}`} className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                    <Link href={`/category/sub/${sub.name}/?category=${router.query.categoryName}`} id={`${sub.name + i.toString()}`} className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
                         <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{sub.name}</p>
                         {isLoading ? null : <img src={sub.imageUrl} className={`w-full rounded-full object-cover h-full bg-gray-600`} />}
                     </Link>
