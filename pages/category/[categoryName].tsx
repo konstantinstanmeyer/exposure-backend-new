@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import { useState, ChangeEvent, useEffect } from 'react';
-import { TypedUseSelectorHook, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
+import { AppDispatch } from "@/src/store";
+import validate from "@/util/validateUser"
 
 interface subCategory {
 
@@ -16,8 +18,11 @@ export default function Category(){
     const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [page, setPage] = useState(1);
     const [subs, setSubs] = useState<Array<any>>([]);
-    const token: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
-    let categoryName: undefined | string | string[];
+    
+    const userState = useSelector((state: any) =>  state.auth.username);
+    const tokenState = useSelector((state: any) =>  state.auth.token);
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter();
 
@@ -25,17 +30,20 @@ export default function Category(){
 
     useEffect(() => {
         setIsLoading(true);
-        categoryName = router.query?.categoryName;
 
-        (async() => {
-            const { data } = await axios.get(`http://localhost:3001/sub-categories/${categoryName}/${page}`, { headers: {"Authorization": `Bearer ${token}`} });
-            setSubs(data.subs)
-            setIsLoading(false);
-        })();
+        if(validate(userState, tokenState, dispatch)){
+            (async() => {
+                const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
+                setSubs(data.subs);
+                setIsLoading(false);
+            })()
+        } else {
+            router.push('/login');
+        }
     }, [page]);
 
     async function fetch(){
-        const { data } = await axios.get(`http://localhost:3001/sub-categories/${categoryName}/${page}`, { headers: {"Authorization": `Bearer ${token}`} });
+        const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
         console.log(data);
     }
 

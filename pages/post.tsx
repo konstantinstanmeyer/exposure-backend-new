@@ -4,7 +4,7 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Navbar from "@/components/Navbar";
 import { AppDispatch } from '../src/store'
-import validate from '@/util/validateUser';
+import { setUsername, setToken } from "@/features/auth/authSlice"
 
 async function uploadToS3(e: ChangeEvent<HTMLFormElement>){
     const formData = new FormData(e.target);
@@ -32,31 +32,26 @@ export default function Post(){
     const [sub, setSub] = useState<any>("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState<null | String>(null);
-    const username = useSelector((state: any) =>  state.auth.username);
-    const token = useSelector((state: any) =>  state.auth.token);
 
     const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter();
 
-    useEffect(() => {
-        const tempCategory = router.query.category;
-        const tempSub = router.query.category;
+    const userState = useSelector((state: any) =>  state.auth.username);
+    const tokenState = useSelector((state: any) =>  state.auth.token);
 
-        if(validate(username, token, dispatch)){
-            if (tempCategory && tempSub) {
-                setCategory(router.query.category);
-                setSub(router.query.sub);
-    
-                const categoryInput = document.querySelector("#cat-input") as HTMLInputElement;
-                const subInput = document.querySelector("#sub-input") as HTMLInputElement;
-    
-                categoryInput.disabled = true;
-                subInput.disabled = true;
-            }
-        } else {
-            router.push('/login');
+    useEffect(() => {
+        if(!userState || !tokenState){
+            const username = localStorage.getItem('username');
+            const token = localStorage.getItem('token');
+
+            if (username && token) {
+                dispatch(setUsername(username));
+                dispatch(setToken(token));
+            } else { router.push('/login') }
         }
+        setCategory(router.query.category);
+        setSub(router.query.sub);
     }, [])
 
     async function handleSubmit(e: ChangeEvent<HTMLFormElement>){

@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import Loading from '../components/Loading'
 import { AppDispatch, RootState } from '../src/store'
-import { setUsername, setToken } from '@/features/auth/authSlice'
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
