@@ -50,6 +50,15 @@ export default function Post(){
                 dispatch(setToken(token));
             } else { router.push('/login') }
         }
+
+        if (router.query.category && router.query.sub){
+            const categoryInput = document.querySelector('#cat-input') as HTMLInputElement;
+            const subInput = document.querySelector('#sub-input') as HTMLInputElement;
+            
+            categoryInput.disabled = true;
+            subInput.disabled = true;
+        }
+
         setCategory(router.query.category);
         setSub(router.query.sub);
     }, [])
