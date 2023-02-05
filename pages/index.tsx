@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import Loading from '../components/Loading'
 import { AppDispatch, RootState } from '../src/store'
-import { setUsername, setToken } from '@/features/auth/authSlice'
+import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
@@ -13,7 +13,6 @@ interface Category {
   name: String;
   imageUrl: String;
 }
-
 
 export default function Home() {
   const [error, setError] = useState<null | String>(null);
@@ -25,22 +24,20 @@ export default function Home() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-
   const router = useRouter();
 
   useEffect(() => {
-    const localUsername = localStorage.getItem('username');
-    const localToken = localStorage.getItem('token');
+    setIsLoading(true);
 
-    if (localUsername && localToken) {
-      dispatch(setUsername(localUsername))
-      dispatch(setToken(localToken));
-    } 
-
-    if(username && token){
+    if(validate(username, token, dispatch)){
       axios.get('http://localhost:3001/categories')
-      .then(res => setCategories(res.data))
-      .catch(err => setError(err));
+      .then(res => {
+        setCategories(res.data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        setError(err);
+      });
     } else {
       router.push('/login');
     }
