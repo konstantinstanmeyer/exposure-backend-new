@@ -12,21 +12,23 @@ export default function Suggest(){
 
     useEffect(() => {
         if(!userState || !tokenState){
-        const username = localStorage.getItem('username');
-        const token = localStorage.getItem('token');
-
-        if (username && token) {
-            dispatch(setUsername(username));
-            dispatch(setToken(token));
-        }
-        }
+            const username = localStorage.getItem('username');
+            const token = localStorage.getItem('token');
+        
+            if (username && token) {
+                dispatch(setUsername(username));
+                dispatch(setToken(token));
+            }
+            }
     }, [])
 
     return (
         <div>
             <Navbar />
             <div className="w-1/4 bg-white flex flex-col">
-
+                <div>
+                    
+                </div>
             </div>
         </div>
     )
