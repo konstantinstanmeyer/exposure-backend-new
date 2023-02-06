@@ -1,7 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = 'http://localhost:3001';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface authSliceState {
     username: String | null,
@@ -18,14 +15,6 @@ const initialState: authSliceState = {
     isSuccess: false,
     isError: false,
 }
-
-export const postAuth = createAsyncThunk('users/fetchAuth', async () => {  
-        const response = await axios.post(BASE_URL + '/login', {
-            email: "asdoiajsd",
-            password: "iuahhf"
-        })
-        return response.data;
-});
 
 const authSlice = createSlice({
     name: "auth",

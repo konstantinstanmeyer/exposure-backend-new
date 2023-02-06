@@ -7,7 +7,6 @@ import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Navbar from '@/components/Navbar'
 
 interface Category {
   name: String;
