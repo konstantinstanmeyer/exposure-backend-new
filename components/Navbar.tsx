@@ -40,7 +40,7 @@ export default function Navbar(){
             <Link href="/" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">home</Link>
             <Link href="/suggest" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">suggest</Link>
             <p onClick={() => handleLogout()} className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline hover:cursor-pointer">log out</p>
-            <img onClick={() => router.push(`/profile`)} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="/profile.png" />
+            <img onClick={() => router.push(`/signup`)} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="/profile.png" />
         </div>
     )
 }
