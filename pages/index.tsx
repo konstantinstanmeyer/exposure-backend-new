@@ -65,7 +65,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="relative">
-        <Navbar />
         {isLoading ? <Loading /> : 
           <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 w-3/5 mx-auto mt-32">
             {categories && !isLoading ? categories.map((c, i) =>     

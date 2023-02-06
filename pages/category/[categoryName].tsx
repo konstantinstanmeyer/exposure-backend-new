@@ -15,6 +15,7 @@ export default function Category(){
     const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [page, setPage] = useState(1);
     const [subs, setSubs] = useState<Array<any>>([]);
+    const [obscurity, setObscurity] = useState<Number>(1);
     
     const username = useSelector((state: any) =>  state.auth.username);
     const token = useSelector((state: any) =>  state.auth.token);
@@ -70,27 +71,46 @@ export default function Category(){
         }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
     }
 
+    const filteredSubs = subs.filter((sub) => sub.obscurity === obscurity);
+
     return(
         <div className="relative w-screen">
-            <Navbar />
-            <div className="w-1/2 mt-20 grid grid-cols-2 mx-auto relative">
-                {subs.length > 0 ? subs.map((sub, i) => 
-                    <Link href={`/category/sub/${sub.name}/?category=${router.query.categoryName}`} id={`${sub.name + i.toString()}`} className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+            <div className="w-1/5 h-10 bg-gray-400 absolute z-40 right-14 -top-10 rounded-xl flex flex-row">
+                <div className="h-full w-full relative flex items-center">
+                    <input id="input" min="1" max="5" value={+obscurity} onChange={e => setObscurity(+e.target.value)} className="accent-slate-500 !outline-none mx-auto w-2/3" type="range" />
+                    <p className="absolute text-gray-300 -bottom-7 text-sm w-full text-center font-bold">obscurity {"(1-5)"}</p>
+                </div>
+            </div>
+            <div className="w-1/2 grid grid-cols-2 mx-auto relative mt-36">
+                {filteredSubs.length > 0 ? filteredSubs.map((sub, i) => 
+                    <Link href={`/category/sub/${sub.name}/?category=${router.query.categoryName}`} id={`${sub.name + i.toString()}`} className={`h-56 w-56 mb-10 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
                         <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{sub.name}</p>
                         {isLoading ? null : <img src={sub.imageUrl} className={`w-full rounded-full object-cover h-full bg-gray-600`} />}
                     </Link>
-                ) :
+                ) : isLoading ?
                 <>
-                    <div className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
-                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>.</p>
+                    <div className={`h-56 w-56 mb-10 bg-gray-600/40 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{" "}</p>
                     </div>
-                    <div className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
-                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>.</p>
+                    <div className={`h-56 w-56 mb-10 bg-gray-600/40 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{" "}</p>
                     </div>
-                </>}
+                </>: 
+                <>
+                    <div className={`h-56 w-56 mb-10  transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{" "}</p>
+                    </div>
+                    <div className="absolute top-16 w-full">
+                        <p className="text-center top-15 relative text-gray-300 font-bold text-3xl">no results</p>
+                    </div>
+                    <div className={`h-56 w-56 mb-10 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                        <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{" "}</p>
+                    </div>
+                </>
+                }
             </div>
-            <div className="mt-14 bg-gray-800 w-32 h-10 mx-auto rounded-md flex flex-row items-center">
-                <p onClick={() => setPage(page => page-1)} className="mx-auto font-extrabold text-gray-300 hover:cursor-pointer">{'<'}</p>
+            <div className="bg-gray-800 mt-4 w-32 h-10 mx-auto rounded-md flex flex-row items-center">
+                <p onClick={page !== 1 ? () => setPage(page => page-1) : undefined} className="mx-auto font-extrabold text-gray-300 hover:cursor-pointer">{'<'}</p>
                 <p className="mx-auto text-gray-300 select-none">{`${page}`}</p>
                 <p onClick={() => setPage(page => page+1)} className="mx-auto font-extrabold text-gray-300 hover:cursor-pointer">{'>'}</p>
             </div>
