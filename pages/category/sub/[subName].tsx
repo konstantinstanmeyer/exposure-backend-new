@@ -50,7 +50,6 @@ export default function Sub(){
 
     return (
         <div className="relative">
-            <Navbar />
             <Link href={`/category/${router.query.category}`} className="absolute top-7 ml-10 bg-white px-5 py-2 flex flex-row items-center space-x-2 rounded-lg">
                 <img className="w-8 h-8" src="/back.png" />
                 <p className="lg:block md:hidden">Go back to {router.query.category}</p>

@@ -72,7 +72,6 @@ export default function Category(){
 
     return(
         <div className="relative w-screen">
-            <Navbar />
             <div className="w-1/2 mt-20 grid grid-cols-2 mx-auto relative">
                 {subs.length > 0 ? subs.map((sub, i) => 
                     <Link href={`/category/sub/${sub.name}/?category=${router.query.categoryName}`} id={`${sub.name + i.toString()}`} className={`h-72 w-72 mt-16 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>

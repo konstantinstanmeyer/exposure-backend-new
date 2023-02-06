@@ -86,7 +86,6 @@ export default function Post(){
 
     return (
         <div className="">
-            <Navbar />
             <form className="mt-32 w-1/4 mx-auto flex flex-col justify-center" onSubmit={handleSubmit}>
                 <div className="w-1/3 mx-auto relative my-8 flex justify-center">
                     <input className="rounded-md indent-3 py-2 !outline-none" type="text" value={title} onChange={e => setTitle(e.target.value)} name="category" />

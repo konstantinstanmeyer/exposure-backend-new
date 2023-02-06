@@ -24,7 +24,6 @@ export default function Suggest(){
 
     return (
         <div>
-            <Navbar />
             <div className="w-1/4 bg-white flex flex-col">
                 <div>
                     

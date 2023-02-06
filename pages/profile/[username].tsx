@@ -5,7 +5,7 @@ export default function ProfileView(){
 
     return (
         <div className="">
-            {`${router.query.username ? router.query.username : ""}`}
+            
         </div>
     )
 }
