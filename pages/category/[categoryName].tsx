@@ -12,15 +12,12 @@ interface subCategory {
 }
 
 export default function Category(){
-    const [category, setCategory] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [obscurity, setObscurity] = useState<string | number | readonly string[] | undefined>(1);
     const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [page, setPage] = useState(1);
     const [subs, setSubs] = useState<Array<any>>([]);
     
-    const userState = useSelector((state: any) =>  state.auth.username);
-    const tokenState = useSelector((state: any) =>  state.auth.token);
+    const username = useSelector((state: any) =>  state.auth.username);
+    const token = useSelector((state: any) =>  state.auth.token);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -31,7 +28,13 @@ export default function Category(){
     useEffect(() => {
         setIsLoading(true);
 
-        if(validate(userState, tokenState, dispatch)){
+        if(username && token){
+            (async() => {
+                const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
+                setSubs(data.subs);
+                setIsLoading(false);
+            })()
+        }else if (validate(dispatch)){
             (async() => {
                 const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
                 setSubs(data.subs);
@@ -51,8 +54,8 @@ export default function Category(){
         e.preventDefault();
 
         const response = await axios.post('http://localhost:3001/add-category', {
-            name: category,
-            imageUrl: imageUrl,
+            // name: category,
+            // imageUrl: imageUrl,
         }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
     }
 
@@ -60,10 +63,10 @@ export default function Category(){
         e.preventDefault();
 
         const response = await axios.post('http://localhost:3001/add-sub-category', {
-            name: category,
-            imageUrl: imageUrl,
-            category: "Farming",
-            obscurity: obscurity
+            // name: category,
+            // imageUrl: imageUrl,
+            // category: "Farming",
+            // obscurity: obscurity
         }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
     }
 

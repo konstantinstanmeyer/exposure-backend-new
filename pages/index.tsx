@@ -29,7 +29,16 @@ export default function Home() {
   useEffect(() => {
     setIsLoading(true);
 
-    if(validate(username, token, dispatch)){
+    if(username && token) {
+      axios.get('http://localhost:3001/categories')
+      .then(res => {
+        setCategories(res.data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        setError(err);
+      });
+    } else if(validate(dispatch)){
       axios.get('http://localhost:3001/categories')
       .then(res => {
         setCategories(res.data);

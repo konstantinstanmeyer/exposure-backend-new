@@ -10,6 +10,7 @@ import validate from "@/util/validateUser"
 
 export default function Sub(){
     const [posts, setPosts] = useState<Array<any>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const username = useSelector((state: any) =>  state.auth.username);
     const token = useSelector((state: any) =>  state.auth.token);
@@ -19,9 +20,30 @@ export default function Sub(){
     const router = useRouter();
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-        .then(res => setPosts(res.data.posts))
-        .catch(err => console.log(err));
+        setIsLoading(true);
+        if(username && token){
+            axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            .then(res => {
+                setPosts(res.data.posts)
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.log(err);
+                setIsLoading(false);
+            });
+        } else if(validate(dispatch)){
+            axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            .then(res => {
+                setPosts(res.data.posts)
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.log(err)
+                setIsLoading(false);
+            });
+        } else {
+            router.push('/login');
+        }
     }, [])
 
     console.log(posts)
@@ -37,7 +59,7 @@ export default function Sub(){
                 <p className="text-gray-900 mx-auto text-center text-3xl rounded-md font-bold bg-white/50 backdrop-blur px-4 py-1">{`${router.query.subName ? router.query.subName : " "}`}</p>
             </div>
             <div className="grid-cols-3 mt-40 mx-auto w-1/2 grid relative pl-5">
-                <Link href={`/post/?category=${router.query.category}&sub=${router.query.subName}`} className="bg-gray-300 hover:bg-gray-500 transition-all duration-200 w-5/6 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto">
+                <Link href={`/post/?category=${router.query.category}&sub=${router.query.subName}`} className={`bg-gray-300 hover:bg-gray-500 ${isLoading ? "animate-spin" : null} transition-all duration-200 w-5/6 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}>
                     <p className="text-center text-6xl font-light">+</p>
                 </Link>
                 {posts.length > 0 ? posts.map(post => 

@@ -27,10 +27,12 @@ export default function Signup(){
         const username = localStorage.getItem('username');
         const token = localStorage.getItem('token');
 
+        console.log(username)
+
         if(username && token) {
             dispatch(setUsername(username))
             dispatch(setToken(token))
-            router.push('/');
+            // router.push('/');
         }
     } ,[])
 
@@ -39,7 +41,9 @@ export default function Signup(){
 
         let response: AxiosResponse;
 
-        if(password === confirmPassword){
+        if(password === "" || email === ""){
+            return setError("All fields must be filled")
+        }else if(password === confirmPassword){
             response = await axios.post("http://localhost:3001/signup", {
             email: email,
             password: password
@@ -49,7 +53,7 @@ export default function Signup(){
             return;
         }
         
-        if(response.status === 200){
+        if(!response?.data.message && response.status === 200){
             const username = response.data.username;
             const token = response.data.token;
 
@@ -60,6 +64,8 @@ export default function Signup(){
             dispatch(setToken(token));
 
             router.push('/');
+        } else if(response?.data?.message){
+            setError(response.data.message);
         } else {
             setError("Authentication Failed");
         }
@@ -84,6 +90,12 @@ export default function Signup(){
                     </div>
                 </form>
                 <Link href="/login" className="absolute text-gray-300 hover:underline -bottom-10 w-full md:text-sm text-center sm:text-xs">Already have an account? Log in!</Link>
+                {error ? 
+                <div className="fixed w-1/5 bg-red-700 rounded-lg h-fit z-40 mx-auto left-[40%] bottom-10">
+                <p className="text-center mx-6 py-3 font-bold font-mono select-none">{error}</p>
+                <p onClick={() => setError(null)} className="absolute top-1 right-3 rotate-45 font-bold text-xl hover:cursor-pointer">+</p>
+                </div>
+                : null }
             </div>
         </div>
     )
