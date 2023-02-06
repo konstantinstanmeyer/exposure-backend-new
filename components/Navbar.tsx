@@ -35,12 +35,12 @@ export default function Navbar(){
             <Link href="/">
                 <img className="w-14 mx-12" src="/camera.png" />
             </Link>
-            <p className="text-gray-300 select-none font-bold text-3xl">hello{username ? `, ${username}` : "NO"}</p>
+            <p className="text-gray-300 select-none font-bold text-3xl">hello{username ? `, ${username}` : null}</p>
             <Link className="ml-auto mx-3 text-gray-300 font-bold mb-1 hover:bg-gray-700 transition-all duration-300 rounded-full px-3 py-1" href="/post">+</Link>
             <Link href="/" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">home</Link>
             <Link href="/suggest" className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline">suggest</Link>
             <p onClick={() => handleLogout()} className="text-gray-300 text-sm font-mono font-bold mx-5 hover:underline hover:cursor-pointer">log out</p>
-            <img onClick={() => router.push(`/signup`)} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="/profile.png" />
+            <img onClick={() => router.push(`/profile/${username}`)} className="w-10 ml-5 mr-10 rounded-full hover:cursor-pointer" src="/profile.png" />
         </div>
     )
 }
