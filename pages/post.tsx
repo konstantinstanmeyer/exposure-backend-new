@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import Navbar from "@/components/Navbar";
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from "@/features/auth/authSlice"
 
