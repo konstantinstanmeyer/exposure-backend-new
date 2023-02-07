@@ -3,7 +3,7 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import { AppDispatch } from '../src/store'
 import { AxiosResponse } from "axios"
-import { setUsername, setToken } from '@/features/auth/authSlice'
+import { setUsername, setToken, setError } from '@/features/auth/authSlice'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 import Link from 'next/link'
 
@@ -14,7 +14,6 @@ export default function Signup(){
     const [email, setEmail] = useState<any>("");
     const [password, setPassword] = useState<any>("");
     const [confirmPassword, setConfirmPassword] = useState<any>("");
-    const [error, setError] = useState<null | String>(null);
 
     const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
     const tokenState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
@@ -42,14 +41,14 @@ export default function Signup(){
         let response: AxiosResponse;
 
         if(password === "" || email === ""){
-            return setError("All fields must be filled")
+            return dispatch(setError("All fields must be filled"));
         }else if(password === confirmPassword){
             response = await axios.post("http://localhost:3001/signup", {
             email: email,
             password: password
             })
         } else {
-            setError("Passwords must be the same")
+            dispatch(setError("Passwords must be the same"));
             return;
         }
         
@@ -65,9 +64,9 @@ export default function Signup(){
 
             router.push('/');
         } else if(response?.data?.message){
-            setError(response.data.message);
+            dispatch(setError(response.data.message));
         } else {
-            setError("Authentication Failed");
+            dispatch(setError("Authentication Failed"));
         }
     }
 
@@ -90,12 +89,6 @@ export default function Signup(){
                     </div>
                 </form>
                 <Link href="/login" className="absolute text-gray-300 hover:underline -bottom-10 w-full md:text-sm text-center sm:text-xs">Already have an account? Log in!</Link>
-                {error ? 
-                <div className="fixed w-1/5 bg-red-700 rounded-lg h-fit z-40 mx-auto left-[40%] bottom-10">
-                <p className="text-center mx-6 py-3 font-bold font-mono select-none">{error}</p>
-                <p onClick={() => setError(null)} className="absolute top-1 right-3 rotate-45 font-bold text-xl hover:cursor-pointer">+</p>
-                </div>
-                : null }
             </div>
         </div>
     )

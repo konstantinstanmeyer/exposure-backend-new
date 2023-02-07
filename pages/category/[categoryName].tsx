@@ -2,10 +2,11 @@ import { useRouter } from 'next/router'
 import { useState, ChangeEvent, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import { AppDispatch } from "@/src/store";
 import validate from "@/util/validateUser"
+import { setError } from '@/features/auth/authSlice'
+import Error from "@/components/Error"
 
 interface subCategory {
 
@@ -37,9 +38,13 @@ export default function Category(){
             })()
         }else if (validate(dispatch)){
             (async() => {
-                const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
-                setSubs(data.subs);
-                setIsLoading(false);
+                try {
+                    const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
+                    setSubs(data.subs);
+                    setIsLoading(false);
+                } catch(e){
+                    setError(e.message);
+                }
             })()
         } else {
             router.push('/login');

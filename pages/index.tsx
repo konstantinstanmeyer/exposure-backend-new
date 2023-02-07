@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { setError } from '@/features/auth/authSlice'
 import axios from 'axios'
 import Loading from '../components/Loading'
-import { AppDispatch, RootState } from '../src/store'
+import { AppDispatch } from '../src/store'
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -14,7 +15,6 @@ interface Category {
 }
 
 export default function Home() {
-  const [error, setError] = useState<null | String>(null);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [categories, setCategories] = useState<Array<Category>>([]);
 
@@ -35,7 +35,7 @@ export default function Home() {
         setIsLoading(false);
       })
       .catch(err => {
-        setError(err);
+        dispatch(setError(err));
       });
     } else if(validate(dispatch)){
       axios.get('http://localhost:3001/categories')
@@ -44,7 +44,7 @@ export default function Home() {
         setIsLoading(false);
       })
       .catch(err => {
-        setError(err);
+        dispatch(setError(err));
       });
     } else {
       router.push('/login');
@@ -76,12 +76,6 @@ export default function Home() {
             ) : null}
           </div>
         }
-        {error ? 
-        <div className="fixed w-1/5 bg-red-700 rounded-lg h-fit z-40 mx-auto left-[40%] bottom-10">
-          <p className="text-center mx-6 py-3 font-bold font-mono select-none">{error}</p>
-          <p onClick={() => setError(null)} className="absolute top-1 right-3 rotate-45 font-bold text-xl hover:cursor-pointer">+</p>
-        </div>
-        : null }
       </div>
     </>
   )
