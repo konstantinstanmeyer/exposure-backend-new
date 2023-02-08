@@ -13,8 +13,14 @@ export default function Navbar(){
     const token = useSelector((state: any) => state.auth.token);
 
     useEffect(() => {
-        if(!token || !username){
-            const localUsername = localStorage.getItem('')
+        if(!username || !token){
+            const localUsername = localStorage.getItem('username');
+            const localToken = localStorage.getItem('token');
+
+            if (username && token) {
+                dispatch(setUsername(localUsername));
+                dispatch(setToken(localToken));
+            } else { router.push('/login') }
         }
     }, [])
 
