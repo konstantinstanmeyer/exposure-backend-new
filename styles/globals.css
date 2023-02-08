@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .dangrek {
+        font-family: 'Dangrek';
+    }
+    .pavanam {
+        font-family: 'Pavanam';
+    }
+}
+
 html {
     background-color: rgb(18, 18, 18);
+}
+
+#nav-text {
+    font-family: 'Dangrek';
 }
