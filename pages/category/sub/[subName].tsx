@@ -62,13 +62,17 @@ export default function Sub(){
                     <p className="text-center text-6xl font-light">+</p>
                 </Link>
                 {posts.length > 0 ? posts.map(post => 
-                    <div className={`bg-white w-64 h-[15rem] ${post.sizing === 1 ? "h-[15rem]" : "h-[25rem] row-span-2"} my-8 rounded-md relative flex mx-auto justify-center`}>
+                    <div className={`bg-white w-64 ${post.sizing === 1 ? "h-[15rem]" : "h-[25rem] row-span-2"} my-8 rounded-md relative flex mx-auto justify-center`}>
                         <img src={post.imageUrl} className="w-full h-2/5 rounded-md object-cover absolute" />
-                        <div className="z-30 h-3/5 w-full flex flex-col bg-gray-400 rounded-br-md rounded-bl-md items-center mt-auto backdrop-blur">
-                            <p className=" font-bold text-lg text-gray-900 mt-2 dangrek">{post.title}</p>
-                            <p className={`lg:text-base ml-5 sm:text-xs mr-4 pavanam text-gray-900/90`}>{post.description.length > 0 && post.sizing === 1 ? post.description.slice(0, 32) + "..." : post.sizing === 2 ? post.description.slice(0, 84) + "..." : null} <Link className="text-xs text-blue-800" href={`/view-post/${post._id}`}> more</Link></p>
-                            <img className="w-12 h-12 object-cover rounded-md" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80" />
-                            <Link href={`/user/${post.creator.username}`} className="text-sm mr-auto ml-5 mt-2">@{post.creator.username}</Link>
+                        <div className="z-30 h-3/5 w-full flex flex-col bg-gray-300 rounded-br-md rounded-bl-md items-center mt-auto">
+                            <div className="w-4/5 h-1/6 flex items-center">
+                                <p className="w-full mt-2 font-bold text-lg text-gray-900 dangrek mx-auto">{post.title}</p>
+                            </div>
+                            <p className={`lg:text-base w-4/5 mx-auto ${post.sizing === 1 ? "h-3/6" : "h-3/5"} sm:text-xs pavanam text-gray-900/90`}>{post.description.length > 0 && post.sizing === 1 ? post.description.slice(0, 60) + "..." : post.sizing === 2 ? post.description.slice(0, 140) + "..." : null} <Link className="text-xs text-blue-800" href={`/view-post/${post._id}`}> more</Link></p>
+                            <div className={`${post.sizing === 1 ? "h-2/6 [&>*]:mt-1" : "h-2/5 [&>*]:mt-2"} w-4/5 flex`}>
+                                    <img className="h-9 w-9 object-cover rounded-md" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80" />
+                                    <Link href={`/user/${post.creator.username}`} className="text-gray-900/90 text-sm h-fit ml-2">@{post.creator.username}</Link>
+                            </div>
                         </div>
                     </div>
                 ): null}
