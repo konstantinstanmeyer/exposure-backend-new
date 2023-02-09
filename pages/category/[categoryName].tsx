@@ -29,7 +29,7 @@ export default function Category(){
                 setSubs(data.subs);
                 setIsLoading(false);
             })()
-        }else if (validate(dispatch)){
+        } else if (validate(dispatch)) {
             (async() => {
                 try {
                     const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
@@ -40,7 +40,7 @@ export default function Category(){
                 }
             })()
         } else {
-            router.push('/login');
+            router.push('/');
         }
     }, [page]);
 

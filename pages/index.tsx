@@ -37,7 +37,7 @@ export default function Home() {
       .catch(err => {
         dispatch(setError(err));
       });
-    } else if(validate(dispatch)){
+    } else if (validate(dispatch)) {
       axios.get('http://localhost:3001/categories')
       .then(res => {
         setCategories(res.data);
