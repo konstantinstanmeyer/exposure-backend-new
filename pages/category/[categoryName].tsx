@@ -6,11 +6,6 @@ import Link from 'next/link';
 import { AppDispatch } from "@/src/store";
 import validate from "@/util/validateUser"
 import { setError } from '@/features/auth/authSlice'
-import Error from "@/components/Error"
-
-interface subCategory {
-
-}
 
 export default function Category(){
     const [isLoading, setIsLoading] = useState<Boolean>(false);
@@ -24,8 +19,6 @@ export default function Category(){
     const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter();
-
-    console.log(router)
 
     useEffect(() => {
         setIsLoading(true);
@@ -42,14 +35,18 @@ export default function Category(){
                     const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
                     setSubs(data.subs);
                     setIsLoading(false);
-                } catch(e){
-                    setError(e.message);
+                } catch(e: any){
+                    dispatch(setError(e.message));
                 }
             })()
         } else {
             router.push('/login');
         }
     }, [page]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [obscurity])
 
     async function fetch(){
         const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
