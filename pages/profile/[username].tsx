@@ -22,7 +22,7 @@ export default function ProfileView(){
     const { query = {} } = router || {};
     const { username = undefined } = query || {};
 
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>();
 
     const usernameState = useSelector((state: any) =>  state.auth.username);
     const tokenState = useSelector((state: any) =>  state.auth.token);
@@ -47,7 +47,7 @@ export default function ProfileView(){
                             setIsUser(true);
                             setEmail(response.data.email);
                             setPictureUrl(response.data.imageUrl);
-                            setIsAdmin(response.data.isAdmin);
+                            setIsAdmin(response.data.admin);
                             setPosts(response.data.posts);
                             console.log(response.data);
                         }
@@ -65,7 +65,7 @@ export default function ProfileView(){
     }, [])
 
     return (
-        <div className="">
+        <div className="relative">
             {isUser ? 
             <>
                 <div className="mt-32">
@@ -73,16 +73,13 @@ export default function ProfileView(){
                 </div>
             </> :
             <>
-                
+
             </>
             }
             {isAdmin ? 
-            <>
-
-            </> :
-            <>
-            
-            </>}
+            <div className="absolute w-20 h-20 bg-white z-40 top-32">
+                hello
+            </div> : null}
         </div>
     )
 }

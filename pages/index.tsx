@@ -29,23 +29,9 @@ export default function Home() {
     setIsLoading(true);
 
     if(username && token) {
-      axios.get('http://localhost:3001/categories')
-      .then(res => {
-        setCategories(res.data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        dispatch(setError(err));
-      });
+      getCategories();
     } else if (validate(dispatch)) {
-      axios.get('http://localhost:3001/categories')
-      .then(res => {
-        setCategories(res.data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        dispatch(setError(err));
-      });
+      getCategories();
     } else {
       router.push('/login');
     }
@@ -54,6 +40,19 @@ export default function Home() {
       // nothing
     }
   }, [])
+
+  function getCategories(){
+    axios.get('http://localhost:3001/categories', { headers: { "Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+    .then(res => {
+      setCategories(res.data);
+      setIsLoading(false);
+    })
+    .catch(err => {
+      if (err.response.data.message){
+        router.push('/login')
+      }
+    });
+  }
 
   return (
     <>
