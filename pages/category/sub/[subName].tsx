@@ -58,9 +58,15 @@ export default function Sub(){
                 <p className="text-black mx-auto text-center text-3xl rounded-md font-bold bg-white/50 backdrop-blur px-4 py-1 dangrek">{`${router.query.subName ? router.query.subName : " "}`}</p>
             </div>
             <div className="lg:grid-cols-3 md:grid-cols-2 mt-40 mx-auto w-2/3 grid relative pl-5">
-                <Link href={`/post/?category=${router.query.category}&sub=${router.query.subName}`} className={`bg-gray-300 hover:bg-gray-500 ${isLoading ? "animate-spin" : null} transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}>
+                <Link href={`/post/?category=${router.query.category}&sub=${router.query.subName}`} className={`bg-gray-300 hover:bg-gray-500 ${isLoading ? "animate-pulse" : null} transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}>
                     <p className="text-center text-6xl font-light">+</p>
                 </Link>
+                {isLoading ? 
+                <>
+                    <div className={`bg-gray-300 hover:bg-gray-500 animate-pulse transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}/>
+                    <div className={`bg-gray-300 hover:bg-gray-500 animate-pulse transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}/>
+                </>
+                : null}
                 {posts.length > 0 ? posts.map(post => 
                     <div className={`bg-white w-64 ${post.sizing === 1 ? "h-[15rem]" : "h-[25rem] row-span-2"} my-8 rounded-md relative flex mx-auto justify-center`}>
                         <img src={post.imageUrl} className="w-full h-2/5 rounded-md object-cover absolute" />
