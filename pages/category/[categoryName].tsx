@@ -40,7 +40,7 @@ export default function Category(){
                 }
             })()
         } else {
-            router.push('/');
+            router.push('/login');
         }
     }, [page]);
 

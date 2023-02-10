@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react";
 import { AppDispatch } from '@/src/store';
 import { useDispatch, useSelector } from "react-redux";
-import { setUsername, setToken } from '@/features/auth/authSlice'
+import validate from "@/util/validateUser";
 import axios from "axios";
 
 interface Post {
@@ -29,13 +29,9 @@ export default function ProfileView(){
 
     useEffect(() => {
         if(!usernameState || !tokenState){
-            const localUsername = localStorage.getItem('username');
-            const localToken = localStorage.getItem('token');
-
-            if (localUsername && localToken) {
-                dispatch(setUsername(localUsername));
-                dispatch(setToken(localToken));
-            } else { router.push('/login') }
+            if (!validate(dispatch)){
+                router.push('/login')
+            }
         }
 
         (async() => {
@@ -61,7 +57,7 @@ export default function ProfileView(){
             } catch(e: any){
                 dispatch(setError(e));
             }
-        })()
+        })();
     }, [])
 
     return (
