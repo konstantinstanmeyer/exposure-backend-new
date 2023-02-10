@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from "@/src/store";
 import { ChangeEvent, useEffect, useState } from "react";
-import { setUsername, setToken } from "@/features/auth/authSlice";
+import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import axios from 'axios';
 
@@ -22,13 +22,9 @@ export default function Suggest(){
 
     useEffect(() => {
         if(!userState || !tokenState){
-            const username = localStorage.getItem('username');
-            const token = localStorage.getItem('token');
-        
-            if (username && token) {
-                dispatch(setUsername(username));
-                dispatch(setToken(token));
-            } else { router.push('/login') }
+            if (!validate(dispatch)){
+                router.push('/login')
+            }
         }
     }, [])
 
@@ -42,8 +38,6 @@ export default function Suggest(){
                     newCategory: newCategory,
                     type: type
                 }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}})
-
-                console.log(data);
             } else if(type === "SubCategory" && existingCategory !== "" && subCategory !== "" && obscurity >=1 && obscurity <= 5) {
                 const { data } = await axios.post('http://localhost:3001/suggestion', {
                     username: userState,
@@ -52,8 +46,6 @@ export default function Suggest(){
                     obscurity: obscurity,
                     type: type
                 }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}});
-
-                console.log(data);
             } else if(obscurity > 6 || obscurity < 1) {
                 setError("Obscurity must be between 1 and 5");
             } else {

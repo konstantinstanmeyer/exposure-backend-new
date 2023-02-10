@@ -4,6 +4,7 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from "@/features/auth/authSlice"
+import validate from '@/util/validateUser';
 
 async function uploadToS3(e: ChangeEvent<HTMLFormElement>){
     const formData = new FormData(e.target);
@@ -41,13 +42,9 @@ export default function Post(){
 
     useEffect(() => {
         if(!userState || !tokenState){
-            const username = localStorage.getItem('username');
-            const token = localStorage.getItem('token');
-
-            if (username && token) {
-                dispatch(setUsername(username));
-                dispatch(setToken(token));
-            } else { router.push('/login') }
+            if (!validate(dispatch)){
+                router.push('/login')
+            }
         }
 
         if (router.query.category && router.query.sub){
