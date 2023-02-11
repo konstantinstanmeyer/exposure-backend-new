@@ -1,7 +1,7 @@
 import { setError } from "@/features/auth/authSlice";
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react";
-import { AppDispatch } from '@/src/store';
+import { AppDispatch, RootState } from '@/src/store';
 import { useDispatch, useSelector } from "react-redux";
 import validate from "@/util/validateUser";
 import axios from "axios";
@@ -27,8 +27,8 @@ export default function ProfileView(){
 
     const dispatch = useDispatch<AppDispatch>();
 
-    const usernameState = useSelector((state: any) =>  state.auth.username);
-    const tokenState = useSelector((state: any) =>  state.auth.token);
+    const usernameState = useSelector((state: RootState) =>  state.auth.username);
+    const tokenState = useSelector((state: RootState) =>  state.auth.token);
 
     useEffect(() => {
         setIsLoading(true);

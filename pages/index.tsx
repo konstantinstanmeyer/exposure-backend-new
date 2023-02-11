@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setError } from '@/features/auth/authSlice'
 import axios from 'axios'
 import Loading from '../components/Loading'
-import { AppDispatch } from '../src/store'
+import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -18,8 +18,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [categories, setCategories] = useState<Array<Category>>([]);
 
-  const username = useSelector((state: any) =>  state.auth.username);
-  const token = useSelector((state: any) =>  state.auth.token);
+  const username = useSelector((state: RootState) =>  state.auth.username);
+  const token = useSelector((state: RootState) =>  state.auth.token);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -51,6 +51,7 @@ export default function Home() {
       if (err.response.data.message){
         router.push('/login')
       }
+      else dispatch(setError(err.response))
     });
   }
 

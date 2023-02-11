@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
-import { AppDispatch } from '../src/store'
+import { AppDispatch, RootState } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux'
 import Link from "next/link"
@@ -14,8 +14,8 @@ export default function Login(){
     const [password, setPassword] = useState<any>("");
     const [error, setError] = useState<String>("");
 
-    const usernameState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.username);
-    const tokenState: TypedUseSelectorHook<any> = useSelector((state: any) =>  state.auth.token);
+    const usernameState = useSelector((state: RootState) =>  state.auth.username);
+    const tokenState = useSelector((state: RootState) =>  state.auth.token);
 
     const router = useRouter();
 

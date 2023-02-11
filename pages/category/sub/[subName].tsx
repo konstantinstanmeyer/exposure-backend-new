@@ -5,15 +5,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '@/src/store';
+import { AppDispatch, RootState } from '@/src/store';
 import validate from "@/util/validateUser"
 
 export default function Sub(){
     const [posts, setPosts] = useState<Array<any>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const username = useSelector((state: any) =>  state.auth.username);
-    const token = useSelector((state: any) =>  state.auth.token);
+    const username = useSelector((state: RootState) =>  state.auth.username);
+    const token = useSelector((state: RootState) =>  state.auth.token);
 
     const dispatch = useDispatch<AppDispatch>();
 
