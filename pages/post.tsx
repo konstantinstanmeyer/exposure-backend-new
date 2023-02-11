@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../src/store'
-import { setUsername, setToken } from "@/features/auth/authSlice"
 import validate from '@/util/validateUser';
 
 async function uploadToS3(e: ChangeEvent<HTMLFormElement>){
