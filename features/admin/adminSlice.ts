@@ -11,8 +11,8 @@ const initialState: AdminState = {
 
 const adminSlice = createSlice({
     name: 'admin',
-    initalState: initialState,
+    initialState,
     reducers: {
-        
+
     }
 })

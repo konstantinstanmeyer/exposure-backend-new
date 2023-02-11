@@ -3,7 +3,7 @@ import { useState, ChangeEvent, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Link from 'next/link';
-import { AppDispatch } from "@/src/store";
+import { AppDispatch, RootState } from "@/src/store";
 import validate from "@/util/validateUser"
 import { setError } from '@/features/auth/authSlice'
 
@@ -13,8 +13,8 @@ export default function Category(){
     const [subs, setSubs] = useState<Array<any>>([]);
     const [obscurity, setObscurity] = useState<Number>(1);
     
-    const username = useSelector((state: any) =>  state.auth.username);
-    const token = useSelector((state: any) =>  state.auth.token);
+    const username = useSelector((state: RootState) =>  state.auth.username);
+    const token = useSelector((state: RootState) =>  state.auth.token);
 
     const dispatch = useDispatch<AppDispatch>();
 
