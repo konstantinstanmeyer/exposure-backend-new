@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from "@/src/store";
+import { AppDispatch, RootState } from "@/src/store";
 import { ChangeEvent, useEffect, useState } from "react";
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
@@ -15,8 +15,8 @@ export default function Suggest(){
 
     const router = useRouter();
 
-    const userState = useSelector((state: any) =>  state.auth.username);
-    const tokenState = useSelector((state: any) =>  state.auth.token);
+    const userState = useSelector((state: RootState) =>  state.auth.username);
+    const tokenState = useSelector((state: RootState) =>  state.auth.token);
 
     const dispatch = useDispatch<AppDispatch>();
 

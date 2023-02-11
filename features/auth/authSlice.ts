@@ -33,7 +33,7 @@ const authSlice = createSlice({
         setError: (state: authSliceState, action: PayloadAction<String | null>) => {
             state.error = action.payload;
         },
-        setEditId: (state: authSliceState, action: PayloadAction<String | null>) => {
+        setEditId: (state: authSliceState, action: PayloadAction<String>) => {
             state.editId = action.payload;
         }
     }
