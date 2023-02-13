@@ -3,13 +3,15 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
+import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function Navbar(){
 
     const dispatch = useDispatch<AppDispatch>();
 
     const username = useSelector((state: any) =>  state.auth.username);
-    // const token = useSelector((state: any) => state.auth.token);
+    const token = useSelector((state: any) => state.auth.token);
 
     const router = useRouter();
 
@@ -21,6 +23,10 @@ export default function Navbar(){
         localStorage.removeItem('token');
 
         router.push('/login');
+    }
+
+    async function checkAuth(){
+
     }
 
     return(

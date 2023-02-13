@@ -20,31 +20,33 @@ export default function Sub(){
     const router = useRouter();
 
     useEffect(() => {
-        setIsLoading(true);
-        if(username && token){
-            axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-            .then(res => {
-                setPosts(res.data.posts)
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-                setIsLoading(false);
-            });
-        } else if(validate(dispatch)){
-            axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-            .then(res => {
-                setPosts(res.data.posts)
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err)
-                setIsLoading(false);
-            });
-        } else {
-            router.push('/login');
+        if (posts.length < 1 || !username || !token){
+            setIsLoading(true);
+            if(username && token){
+                axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                .then(res => {
+                    setPosts(res.data.posts)
+                    setIsLoading(false);
+                })
+                .catch(err => {
+                    console.log(err);
+                    setIsLoading(false);
+                });
+            } else if(validate(dispatch)){
+                axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                .then(res => {
+                    setPosts(res.data.posts)
+                    setIsLoading(false);
+                })
+                .catch(err => {
+                    console.log(err)
+                    setIsLoading(false);
+                });
+            } else {
+                router.push('/login');
+            }
         }
-    }, [])
+    })
 
     console.log(posts)
 
