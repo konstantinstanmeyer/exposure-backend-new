@@ -18,3 +18,7 @@ html {
 #nav-text {
     font-family: 'Dangrek';
 }
+
+#post-description {
+    hyphens: auto;
+}
