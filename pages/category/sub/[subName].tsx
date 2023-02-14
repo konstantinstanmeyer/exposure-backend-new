@@ -1,52 +1,44 @@
-import Navbar from '@/components/Navbar'
-import axios from 'axios';
 import Link from 'next/link'
-import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/src/store';
 import validate from "@/util/validateUser"
+import { fetchPosts, setSubCategory } from '@/features/post/postSlice';
 
 export default function Sub(){
-    const [posts, setPosts] = useState<Array<any>>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [clientLoaded, setClientLoaded] = useState<boolean>(false);
 
     const username = useSelector((state: RootState) =>  state.auth.username);
     const token = useSelector((state: RootState) =>  state.auth.token);
+    const posts = useSelector((state: RootState) => state.posts.posts);
+    const status = useSelector((state: RootState) => state.posts.status);
+    const subCategory = useSelector((state: RootState) => state.posts.subCategory);
 
     const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter();
 
     useEffect(() => {
-        setIsLoading(true);
-        if(username && token){
-            axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-            .then(res => {
-                setPosts(res.data.posts)
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-                setIsLoading(false);
-            });
-        } else if(validate(dispatch)){
-            axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-            .then(res => {
-                setPosts(res.data.posts)
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err)
-                setIsLoading(false);
-            });
-        } else {
-            router.push('/login');
-        }
+        setClientLoaded(true);
     }, [])
 
-    console.log(posts)
+    useEffect(() => {
+        if (clientLoaded && router.isReady){
+            const subCategoryParam = router.query.subName;
+            if(subCategory !== subCategoryParam){
+                dispatch(setSubCategory(subCategoryParam))
+                if (posts.length < 1 && status !== "none"){
+                    if(username && token){
+                        dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                        console.log("reached")
+                    } else if(validate(dispatch)){
+                        dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                    }
+                }
+            }
+        }
+    }, [clientLoaded, router.isReady, posts])
 
     return (
         <div className="relative">
@@ -58,10 +50,10 @@ export default function Sub(){
                 <p className="text-black mx-auto text-center text-3xl rounded-md font-bold bg-white/50 backdrop-blur px-4 py-1 dangrek">{`${router.query.subName ? router.query.subName : " "}`}</p>
             </div>
             <div className="lg:grid-cols-3 md:grid-cols-2 mt-40 mx-auto w-2/3 grid relative pl-5">
-                <Link href={`/post/?category=${router.query.category}&sub=${router.query.subName}`} className={`bg-gray-300 hover:bg-gray-500 ${isLoading ? "animate-pulse" : null} transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}>
+                <Link href={`/post/?category=${router.query.category}&sub=${router.query.subName}`} className={`bg-gray-300 hover:bg-gray-500 ${status === 'loading' ? "animate-pulse" : null} transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}>
                     <p className="text-center text-6xl font-light">+</p>
                 </Link>
-                {isLoading ? 
+                {status === 'loading' ? 
                 <>
                     <div className={`bg-gray-300 hover:bg-gray-500 animate-pulse transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}/>
                     <div className={`bg-gray-300 hover:bg-gray-500 animate-pulse transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}/>

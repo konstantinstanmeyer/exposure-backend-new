@@ -23,26 +23,28 @@ export default function Category(){
     useEffect(() => {
         setIsLoading(true);
 
-        if(username && token){
-            (async() => {
-                const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
-                setSubs(data.subs);
-                setIsLoading(false);
-            })()
-        } else if (validate(dispatch)) {
-            (async() => {
-                try {
+        if (router.isReady){
+            if(username && token){
+                (async() => {
                     const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
                     setSubs(data.subs);
                     setIsLoading(false);
-                } catch(e: any){
-                    dispatch(setError(e.message));
-                }
-            })()
-        } else {
-            router.push('/login');
+                })()
+            } else if (validate(dispatch)) {
+                (async() => {
+                    try {
+                        const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
+                        setSubs(data.subs);
+                        setIsLoading(false);
+                    } catch(e: any){
+                        dispatch(setError(e.message));
+                    }
+                })()
+            } else {
+                router.push('/login');
+            }
         }
-    }, [page]);
+    }, [page, router.isReady]);
 
     useEffect(() => {
         setPage(1);

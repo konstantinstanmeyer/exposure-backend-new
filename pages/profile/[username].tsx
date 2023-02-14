@@ -34,62 +34,40 @@ export default function ProfileView(){
         setIsLoading(true);
         if(!usernameState || !tokenState){
             if (validate(dispatch)){
-                (async() => {
-                    try {
-                        if (username){
-                            const response: any = await axios.get(`http://localhost:3001/profile/${username}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}});
-                            if (response.status === 200) {
-                                if (response.data.username === usernameState){
-                                    setIsUser(true);
-                                }
-                                setEmail(response.data.email);
-                                setImageUrl(response.data.imageUrl);
-                                setIsAdmin(response.data.admin);
-                                setPosts(response.data.posts);
-                                console.log(response.data);
-                                setIsLoading(false);
-                            } else {
-                                console.log(response);
-                                dispatch(setError(response));
-                            }
-                        } else {
-                            router.push('/');
-                        }
-                    } catch(e: any){
-                        dispatch(setError(e));
-                    }
-                })();
+                fetchUser();
             } else {
                 router.push('/login')
             }
         } else {
-            (async() => {
-                try {
-                    if (username){
-                        const response: any = await axios.get(`http://localhost:3001/profile/${username}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}});
-                        if (response.status === 200) {
-                            if (response.data.username === usernameState){
-                                setIsUser(true);
-                            }
-                            setEmail(response.data.email);
-                            setImageUrl(response.data.imageUrl);
-                            setIsAdmin(response.data.admin);
-                            setPosts(response.data.posts);
-                            console.log(response.data);
-                            setIsLoading(false);
-                        } else {
-                            console.log(response);
-                            dispatch(setError(response));
-                        }
-                    } else {
-                        router.push('/');
-                    }
-                } catch(e: any){
-                    dispatch(setError(e));
-                }
-            })();
+            fetchUser();
         }
     }, [])
+
+    async function fetchUser(){
+        try {
+            if (username){
+                const response: any = await axios.get(`http://localhost:3001/profile/${username}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}});
+                if (response.status === 200) {
+                    if (response.data.username === usernameState){
+                        setIsUser(true);
+                    }
+                    setEmail(response.data.email);
+                    setImageUrl(response.data.imageUrl);
+                    setIsAdmin(response.data.admin);
+                    setPosts(response.data.posts);
+                    console.log(response.data);
+                    setIsLoading(false);
+                } else {
+                    console.log(response);
+                    dispatch(setError(response));
+                }
+            } else {
+                router.push('/');
+            }
+        } catch(e: any){
+            dispatch(setError(e));
+        }  
+    }
 
     if (isLoading) return (
     <div className="absolute h-full w-full">
