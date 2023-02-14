@@ -55,6 +55,7 @@ const postsSlice = createSlice({
                 state.subCategory = action.payload;
                 console.log("change");
                 state.posts = [];
+                state.status = 'idle';
             }
             state.subCategory = action.payload;
             console.log(`${action.payload} + ${current(state)}`)
@@ -67,8 +68,12 @@ const postsSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
-                state.posts = action.payload.posts;
-                state.status = 'success';
+                if (action.payload.posts.length >= 1){
+                    state.posts = action.payload.posts;
+                    state.status = 'success';
+                } else {
+                    state.status = "none";
+                }
             })
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.status = 'failed';

@@ -1,7 +1,4 @@
-import Navbar from '@/components/Navbar'
-import axios from 'axios';
 import Link from 'next/link'
-import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,8 +7,6 @@ import validate from "@/util/validateUser"
 import { fetchPosts, setSubCategory } from '@/features/post/postSlice';
 
 export default function Sub(){
-    // const [posts, setPosts] = useState<Array<any>>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [clientLoaded, setClientLoaded] = useState<boolean>(false);
 
     const username = useSelector((state: RootState) =>  state.auth.username);
@@ -30,35 +25,20 @@ export default function Sub(){
 
     useEffect(() => {
         if (clientLoaded && router.isReady){
-            dispatch(setSubCategory(router.query.subName))
-            if(username && token){
-                // axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-                // .then(res => {
-                //     setPosts(res.data.posts)
-                //     setIsLoading(false);
-                // })
-                // .catch(err => {
-                //     console.log(err);
-                //     setIsLoading(false);
-                // });
-                dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                console.log("reached")
-            } else if(validate(dispatch)){
-            //     axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-            //     .then(res => {
-            //         setPosts(res.data.posts)
-            //         setIsLoading(false);
-            //     })
-            //     .catch(err => {
-            //         console.log(err)
-            //         setIsLoading(false);
-            //     });
-            // } else {
-            //     router.push('/login');
-                dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+            const subCategoryParam = router.query.subName;
+            if(subCategory !== subCategoryParam){
+                dispatch(setSubCategory(subCategoryParam))
+                if (posts.length < 1 && status !== "none"){
+                    if(username && token){
+                        dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                        console.log("reached")
+                    } else if(validate(dispatch)){
+                        dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                    }
+                }
             }
         }
-    }, [clientLoaded, router.isReady])
+    }, [clientLoaded, router.isReady, posts])
 
     return (
         <div className="relative">
