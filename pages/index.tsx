@@ -8,11 +8,7 @@ import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-
-interface Category {
-  name: String;
-  imageUrl: String;
-}
+import { Category } from '@/types/global'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
@@ -42,7 +38,7 @@ export default function Home() {
   }, [])
 
   function getCategories(){
-    axios.get('http://localhost:3001/categories', { headers: { "Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+    axios.get<Category[]>('http://localhost:3001/categories', { headers: { "Authorization" : `Bearer ${localStorage.getItem('token')}`}})
     .then(res => {
       setCategories(res.data);
       setIsLoading(false);

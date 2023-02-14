@@ -4,25 +4,9 @@ import { RootState, AppDispatch } from '@/src/store'
 import validate from '@/util/validateUser'
 import { useRouter } from "next/router";
 import { setError, setEditId } from "@/features/auth/authSlice";
+import { Post } from "@/types/global";
 import axios from "axios";
 import Link from "next/link";
-
-interface Creator {
-    username: String,
-    imageUrl: string
-}
-
-interface Post {
-    _id: String,
-    title: String,
-    category: String,
-    subCategory: String,
-    description: String,
-    creator: Creator,
-    imageUrl: string,
-    sizing: Number,
-    date: Date | string,
-}
 
 export default function viewPost(){
     const [title, setTitle] = useState<String>("");
@@ -99,9 +83,10 @@ export default function viewPost(){
                     </div>
                 </div>
                 <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "animate-pulse" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
-                <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
+                <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 items-center ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
                     {title}
-                    {editId ? <Link href={`/edit`}>edit</Link> : null}
+                    {" "}
+                    {editId ? <Link className="hover:bg-gray-600 transition-all duration-300 text-sm bg-gray-300 text-neutral-800 text-center px-2 py-1 rounded-lg" href={`/edit`}>edit</Link> : null}
                 </p>
                 <p id="post-description" className={isLoading ? "w-56 h-40 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
                 <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>
