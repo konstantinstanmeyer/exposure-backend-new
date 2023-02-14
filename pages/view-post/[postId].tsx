@@ -72,7 +72,7 @@ export default function viewPost(){
                 setCategory(data.category);
                 setDate(new Date(data.date).toString().split(' ').slice(0,4).join(' '))
                 if (userState === data.creator.username || localStorage.getItem('username') === data.creator.username){
-                    dispatch(setEditId(data.creator.username));
+                    dispatch(setEditId(data._id));
                     console.log('uesueuuse')
                 }
                 console.log(data);
@@ -101,7 +101,7 @@ export default function viewPost(){
                 <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "animate-pulse" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
                 <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
                     {title}
-                    {editId ? <Link href="/">edit</Link> : null}
+                    {editId ? <Link href={`/edit/${editId}`}>edit</Link> : null}
                 </p>
                 <p id="post-description" className={isLoading ? "w-56 h-40 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
                 <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>

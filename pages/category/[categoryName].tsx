@@ -87,7 +87,7 @@ export default function Category(){
             </div>
             <div className="w-1/2 grid grid-cols-2 mx-auto relative mt-36">
                 {filteredSubs.length > 0 ? filteredSubs.map((sub, i) => 
-                    <Link href={`/category/sub/${sub.name}/?category=${router.query.categoryName}`} id={`${sub.name + i.toString()}`} className={`h-56 w-56 mb-10 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
+                    <Link href={`/category/sub/${sub.name}/?category=${router.query.categoryName}`} key={`${sub.name + i.toString()}`} className={`h-56 w-56 mb-10 hover:bg-gray-600 transition-all duration-300 ${isLoading ? "animate-pulse bg-gray-600 rounded-full" : null} m-auto relative p-3 rounded-md flex items-center justify-center`}>
                         <p className={`absolute -bottom-7 text-center w-1/2 left-[25%] text-gray-300 ${isLoading ? "text-white/0 bg-gray-600 rounded-lg animate-pulse" : null}`}>{sub.name}</p>
                         {isLoading ? null : <img src={sub.imageUrl} className={`w-full rounded-full object-cover h-full bg-gray-600`} />}
                     </Link>

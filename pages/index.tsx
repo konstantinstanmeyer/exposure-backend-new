@@ -67,7 +67,7 @@ export default function Home() {
         {isLoading ? <Loading /> : 
           <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 w-3/5 mx-auto mt-32">
             {categories && !isLoading ? categories.map((c, i) =>     
-              <Link id={c.name + i.toString()} href={`/category/${c.name}`} className={`bg-gray-gray-900 transitional-all duration-300 hover:opacity-60 h-72 flex items-center justify-center relative w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}>
+              <Link key={c.name + i.toString()} href={`/category/${c.name}`} className={`bg-gray-gray-900 transitional-all duration-300 hover:opacity-60 h-72 flex items-center justify-center relative w-64 rounded-md mx-auto ${isLoading ? "animate-pulse" : null}`}>
                <img className="h-full w-full object-cover rounded-md" src={`${c.imageUrl}`}/>
                 <div className="bg-white/30 backdrop-blur-md absolute w-32 min:h-5 rounded-md">
                   <p className="font-bold text-center mx-3 break-all py-1">{`${c.name}`}</p>
