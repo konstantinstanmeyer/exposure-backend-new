@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/src/store';
 import validate from "@/util/validateUser"
-import { fetchPosts } from '@/features/post/postSlice';
+import { fetchPosts, setSubCategory } from '@/features/post/postSlice';
 
 export default function Sub(){
     // const [posts, setPosts] = useState<Array<any>>([]);
@@ -18,6 +18,7 @@ export default function Sub(){
     const token = useSelector((state: RootState) =>  state.auth.token);
     const posts = useSelector((state: RootState) => state.posts.posts);
     const status = useSelector((state: RootState) => state.posts.status);
+    const subCategory = useSelector((state: RootState) => state.posts.subCategory);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -29,33 +30,32 @@ export default function Sub(){
 
     useEffect(() => {
         if (clientLoaded && router.isReady){
-            if (status !== 'success'){
-                setIsLoading(true);
-                if(username && token){
-                    // axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-                    // .then(res => {
-                    //     setPosts(res.data.posts)
-                    //     setIsLoading(false);
-                    // })
-                    // .catch(err => {
-                    //     console.log(err);
-                    //     setIsLoading(false);
-                    // });
-                    dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                } else if(validate(dispatch)){
-                //     axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-                //     .then(res => {
-                //         setPosts(res.data.posts)
-                //         setIsLoading(false);
-                //     })
-                //     .catch(err => {
-                //         console.log(err)
-                //         setIsLoading(false);
-                //     });
-                // } else {
-                //     router.push('/login');
-                    dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                }
+            dispatch(setSubCategory(router.query.subName))
+            if(username && token){
+                // axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                // .then(res => {
+                //     setPosts(res.data.posts)
+                //     setIsLoading(false);
+                // })
+                // .catch(err => {
+                //     console.log(err);
+                //     setIsLoading(false);
+                // });
+                dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                console.log("reached")
+            } else if(validate(dispatch)){
+            //     axios.get(`http://localhost:3001/posts/${router.query.category}/${router.query.subName}`, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            //     .then(res => {
+            //         setPosts(res.data.posts)
+            //         setIsLoading(false);
+            //     })
+            //     .catch(err => {
+            //         console.log(err)
+            //         setIsLoading(false);
+            //     });
+            // } else {
+            //     router.push('/login');
+                dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
             }
         }
     }, [clientLoaded, router.isReady])

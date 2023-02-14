@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, createAsyncThunk, current } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 interface Creator {
@@ -16,23 +16,26 @@ export interface Post {
     title: String,
     _id: String
 }
-
-export interface PostState {
-    posts: Post[];
-    status: String;
-    error: String | undefined;
-}
-
 interface GetProps {
     token: String;
     category: String | undefined | string[];
     subCategory: String | undefined | string[];
 }
 
+export interface PostState {
+    posts: Post[];
+    status: String;
+    error: String | undefined;
+    subCategory: string | string[] | undefined;
+    previous: null | string;
+}
+
 const initialState: PostState = {
     posts: [],
     status: 'idle',
-    error: ""
+    error: "",
+    subCategory: undefined,
+    previous: null,
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(props: GetProps) => {
@@ -47,7 +50,16 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-
+        setSubCategory: (state: PostState, action: PayloadAction<string | undefined | string[]>) => {
+            if (state.subCategory && state.subCategory !== action.payload){
+                state.subCategory = action.payload;
+                console.log("change");
+                state.posts = [];
+            }
+            state.subCategory = action.payload;
+            console.log(`${action.payload} + ${current(state)}`)
+            console.log(JSON.stringify(state, undefined, 2))
+        }
     },
     extraReducers(builder){
         builder
@@ -55,8 +67,8 @@ const postsSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
-                state.status = 'success';
                 state.posts = action.payload.posts;
+                state.status = 'success';
             })
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.status = 'failed';
@@ -65,6 +77,6 @@ const postsSlice = createSlice({
     }
 })
 
-export const {  } = postsSlice.actions;
+export const { setSubCategory } = postsSlice.actions;
 
 export default postsSlice.reducer;
