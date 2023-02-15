@@ -3,15 +3,20 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../src/store'
 import { setUsername, setToken } from '@/features/auth/authSlice'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function Navbar(){
+interface ProfileUrl {
+    username: String;
+    imageUrl: String;
+}
 
+export default function Navbar(){
+    const [image, setImage] = useState<string>("");
+    
     const dispatch = useDispatch<AppDispatch>();
 
     const username = useSelector((state: any) =>  state.auth.username);
-    const token = useSelector((state: any) => state.auth.token);
 
     const router = useRouter();
 
@@ -24,6 +29,17 @@ export default function Navbar(){
 
         router.push('/login');
     }
+
+    useEffect(() => {
+        (
+            async() => {
+                if (username) {
+                    const { data } = await axios.get<ProfileUrl>(`http://localhost:3001/profileImage`);
+                    
+                }
+            }
+        )();
+    }, [username])
 
     return(
         <div className="h-20 w-screen bg-neutral-800 flex flex-row items-center fixed top-0 z-40">

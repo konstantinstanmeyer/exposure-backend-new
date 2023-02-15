@@ -81,13 +81,13 @@ export default function viewPost(){
                         <p className="text-gray-300 text-xs -ml-4">{`${date}`}</p>
                     </div>
                 </div>
-                <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "animate-pulse" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
+                <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "invisible" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
                 <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 items-center ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
                     {title}
                     {" "}
                     {editId ? <Link className="hover:bg-gray-600 transition-all duration-300 text-sm bg-gray-300 text-neutral-800 text-center px-2 py-1 rounded-lg" href={`/edit`}>edit</Link> : null}
                 </p>
-                <p id="post-description" className={isLoading ? "w-56 h-40 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
+                <p id="post-description" className={isLoading ? "w-56 h-40 -mt-1 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
                 <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>
             </div>
         </div>

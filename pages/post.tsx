@@ -4,26 +4,7 @@ import { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
-
-async function uploadToS3(e: ChangeEvent<HTMLFormElement>){
-    const formData = new FormData(e.target);
-
-    const file: any = formData.get("file");
-
-    if (!file) return null;
-
-    // @ts=ignore
-
-    const fileType = encodeURIComponent(file.type);
-
-    const { data } = await axios.get(`/api/s3?type=${fileType}`);
-
-    const { uploadUrl, key } = data;
-
-    await axios.put(uploadUrl, file);
-
-    return key;
-}
+import uploadToS3 from '@/util/uploadToS3'
 
 export default function Post(){
     const [title, setTitle] = useState("");

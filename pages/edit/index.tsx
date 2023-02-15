@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ChangeEvent, useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { setError } from "@/features/auth/authSlice";
+import uploadToS3 from "@/util/uploadToS3";
 
 export default function EditPost(){
     const postId = useSelector((state: RootState) => state.posts.editPostId);
@@ -12,6 +13,7 @@ export default function EditPost(){
     
     const [description, setDescription] = useState<string>("");
     const [title, setTitle] = useState<string>("");
+    const [hasChanged, setHasChanged] = useState<boolean>(false);
     const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [uploadState, setUploadState] = useState<boolean>(false);
@@ -45,7 +47,7 @@ export default function EditPost(){
     async function handleSubmit(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();
 
-        console.log(e.target.file[0])
+        const key = uploadToS3(e);
 
         const token = localStorage.getItem('token');
 
@@ -53,7 +55,7 @@ export default function EditPost(){
             const response = await axios.post(`http://localhost:3001/edit/${postId}`, {
                 title: title,
                 username: username,
-                imageUrl: imageUrl,
+                imageUrl: hasChanged ? key : imageUrl,
                 description: description
             }, { headers: { "Authorization": "Bearer " + token } });
             
@@ -76,12 +78,12 @@ export default function EditPost(){
             </div>
             <div className="relative w-2/5 mb-2">
             <p className="text-gray-300 absolute -top-5 text-sm ml-2">image</p>
-                <img className="rounded-xl aspect-square w-full object-fit bg-bottom" src={imageUrl ? imageUrl : isLoading ? "" : "/no-image.png"} />
+                <img className={`rounded-xl aspect-square w-full object-fit bg-bottom ${isLoading ? "invisible" : null}`} src={imageUrl ? imageUrl : isLoading ? "" : "/no-image.png"} />
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col w-full">
                 {uploadState ? 
-                    <input type="file" className="my-2 py-[0.15rem] file:bg-neutral-500 hover:file:bg-neutral-400 mx-auto transitional-all duration-300 file:!outline-none file:rounded-lg text-gray-600 text-sm px-2 w-2/5" /> : 
-                    <p onClick={() => setUploadState((state: any) => !state)} className="bg-neutral-400 hover:cursor-pointer text-neutral-800 rounded-lg px-2 py-1 my-2 text-sm dangrek w-2/3 text-center mx-auto">add new image (png, jpg, jpeg)</p>
+                    <input onChange={() => setHasChanged(state => !state)} type="file" className="my-2 py-[0.15rem] file:bg-neutral-500 hover:file:bg-neutral-400 mx-auto transitional-all duration-300 file:!outline-none file:rounded-lg text-gray-600 text-sm px-2 w-2/5" /> : 
+                    <p onClick={() => setUploadState(state => !state)} className="bg-neutral-400 hover:cursor-pointer text-neutral-800 rounded-lg px-2 py-1 my-2 text-sm dangrek w-2/3 text-center mx-auto">add new image (png, jpg, jpeg)</p>
                 }
                 <button type="submit" className="font-bold bg-neutral bg-neutral-700 text-neutral-400 py-2 max-w-[50%] mx-auto rounded-lg px-2 mt-2">submit changes</button>
             </form>
