@@ -6,16 +6,16 @@ import { useEffect } from "react"
 import { useRouter } from "next/router";
 
 export default function EditPost(){
-    const editId = useSelector((state: RootState) => state.auth.editId);
+    const postId = useSelector((state: RootState) => state.posts.editPostId);
 
     const router = useRouter();
 
     useEffect(() => {
         (
             async() => {
-                if(editId){
-                    const { data } = await axios.get<Post>(`http://localhost:3001/post/${editId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
-                    
+                if(postId){
+                    const { data } = await axios.get<Post>(`http://localhost:3001/post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
+                    console.log(data);
                 } else {
                     router.push('/');
                 }

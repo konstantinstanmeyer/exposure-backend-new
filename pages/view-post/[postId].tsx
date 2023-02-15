@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from '@/src/store'
 import validate from '@/util/validateUser'
 import { useRouter } from "next/router";
-import { setError, setEditId } from "@/features/auth/authSlice";
-import { Post } from "@/types/global";
+import { setError } from "@/features/auth/authSlice";
+import { Post, setEditPostId } from "@/features/post/postSlice";
 import axios from "axios";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function viewPost(){
 
     const userState = useSelector((state: RootState) =>  state.auth.username);
     const tokenState = useSelector((state: RootState) =>  state.auth.token);
-    const editId = useSelector((state: RootState) => state.auth.editId);
+    const editId = useSelector((state: RootState) => state.posts.editPostId);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -51,26 +51,25 @@ export default function viewPost(){
                 setTitle(data.title);
                 setDescription(data.description);
                 setUsername(data.creator.username);
-                setProfileUrl(data.creator.imageUrl);
+                setProfileUrl(data.creator.pictureUrl);
                 setImageUrl(data.imageUrl);
                 setCategory(data.category);
                 setDate(new Date(data.date).toString().split(' ').slice(0,4).join(' '))
                 if (userState === data.creator.username || localStorage.getItem('username') === data.creator.username){
-                    dispatch(setEditId(data._id));
-                    console.log('uesueuuse')
+                    dispatch(setEditPostId(data._id));
                 }
-                console.log(data);
+                // console.log(data);
                 setIsLoading(false);
             } else {
                 router.push('/')
             }
         } catch(e: any) {
             dispatch(setError(e.status + e.message));
-            console.log(e);
+            // console.log(e);
         }
     }
 
-    console.log(profileUrl)
+    // console.log(profileUrl)
 
     return(
         <div className="flex justify-center">
