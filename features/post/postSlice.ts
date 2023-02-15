@@ -14,7 +14,7 @@ export interface Post {
     sizing: Number,
     subCategory: String,
     title: String,
-    _id: String
+    _id: String,
 }
 interface GetProps {
     token: String;
@@ -28,6 +28,7 @@ export interface PostState {
     error: String | undefined;
     subCategory: string | string[] | undefined;
     previous: null | string;
+    editPostId: String | null
 }
 
 const initialState: PostState = {
@@ -36,6 +37,7 @@ const initialState: PostState = {
     error: "",
     subCategory: undefined,
     previous: null,
+    editPostId: null
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(props: GetProps) => {
@@ -60,6 +62,9 @@ const postsSlice = createSlice({
             state.subCategory = action.payload;
             console.log(`${action.payload} + ${current(state)}`)
             console.log(JSON.stringify(state, undefined, 2))
+        },
+        setEditPostId: (state: PostState, action: PayloadAction<String>) => {
+            state.editPostId = action.payload;
         }
     },
     extraReducers(builder){
@@ -82,6 +87,6 @@ const postsSlice = createSlice({
     }
 })
 
-export const { setSubCategory } = postsSlice.actions;
+export const { setSubCategory, setEditPostId } = postsSlice.actions;
 
 export default postsSlice.reducer;
