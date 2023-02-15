@@ -2,17 +2,19 @@ import { useSelector, useDispatch } from "react-redux"
 import { RootState, AppDispatch } from '@/src/store'
 import { Post } from '@/features/post/postSlice'
 import axios from 'axios';
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { setError } from "@/features/auth/authSlice";
 
 export default function EditPost(){
     const postId = useSelector((state: RootState) => state.posts.editPostId);
+    const username = useSelector((state: RootState) => state.auth.username);
     
     const [description, setDescription] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [uploadState, setUploadState] = useState<boolean>(false);
     
     const router = useRouter();
 
@@ -40,12 +42,30 @@ export default function EditPost(){
         )()
     }, [])
 
-    async function submit(){
+    async function handleSubmit(e: ChangeEvent<HTMLFormElement>){
+        e.preventDefault();
 
+        console.log(e.target.file[0])
+
+        const token = localStorage.getItem('token');
+
+        if (title !== "" && imageUrl !== "" && username && token){
+            const response = await axios.post(`http://localhost:3001/edit/${postId}`, {
+                title: title,
+                username: username,
+                imageUrl: imageUrl,
+                description: description
+            }, { headers: { "Authorization": "Bearer " + token } });
+            
+            if(response.status === 200){
+                router.push(`/view-post/${postId}`)
+            }
+        }
     }
  
     return(
-        <div className="relative flex flex-col justify-center mt-32 w-1/3 [&>*]:mx-auto">
+        <div className="relative flex flex-col justify-center mt-32 w-1/3 [&>*]:mx-auto mx-auto">
+            <p onClick={() => setUploadState((state:any)=> !state)} className="absolute bg-white">change</p>
             <div className="relative w-1/3">
                 <p className="text-gray-300 absolute -top-5 text-sm ml-2">title</p>
                 <input value={title} onChange={e => setTitle(e.target.value)} className="bg-neutral-400 rounded-lg w-full indent-3 font-bold py-2 !outline-none" />
@@ -58,8 +78,13 @@ export default function EditPost(){
             <p className="text-gray-300 absolute -top-5 text-sm ml-2">image</p>
                 <img className="rounded-xl aspect-square w-full object-fit bg-bottom" src={imageUrl ? imageUrl : isLoading ? "" : "/no-image.png"} />
             </div>
-            <button className="bg-neutral-400 text-neutral-800 rounded-lg px-2 py-1 my-2 text-sm dangrek">change image (png, jpg, jpeg)</button>
-            <button onClick={() => submit()} className=""></button>
+            <form onSubmit={handleSubmit} className="flex flex-col w-full">
+                {uploadState ? 
+                    <input type="file" className="my-2 py-[0.15rem] file:bg-neutral-500 hover:file:bg-neutral-400 mx-auto transitional-all duration-300 file:!outline-none file:rounded-lg text-gray-600 text-sm px-2 w-2/5" /> : 
+                    <p onClick={() => setUploadState((state: any) => !state)} className="bg-neutral-400 hover:cursor-pointer text-neutral-800 rounded-lg px-2 py-1 my-2 text-sm dangrek w-2/3 text-center mx-auto">add new image (png, jpg, jpeg)</p>
+                }
+                <button type="submit" className="font-bold bg-neutral bg-neutral-700 text-neutral-400 py-2 max-w-[50%] mx-auto rounded-lg px-2 mt-2">submit changes</button>
+            </form>
         </div>
     )
 }
