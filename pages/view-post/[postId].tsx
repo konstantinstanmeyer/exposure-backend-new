@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from '@/src/store'
 import validate from '@/util/validateUser'
 import { useRouter } from "next/router";
-import { setError, setEditId } from "@/features/auth/authSlice";
-import { Post } from "@/types/global";
+import { setError } from "@/features/auth/authSlice";
+import { Post, setEditPostId } from "@/features/post/postSlice";
 import axios from "axios";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function viewPost(){
 
     const userState = useSelector((state: RootState) =>  state.auth.username);
     const tokenState = useSelector((state: RootState) =>  state.auth.token);
-    const editId = useSelector((state: RootState) => state.auth.editId);
+    const editId = useSelector((state: RootState) => state.posts.editPostId);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -51,26 +51,25 @@ export default function viewPost(){
                 setTitle(data.title);
                 setDescription(data.description);
                 setUsername(data.creator.username);
-                setProfileUrl(data.creator.imageUrl);
+                setProfileUrl(data.creator.pictureUrl);
                 setImageUrl(data.imageUrl);
                 setCategory(data.category);
                 setDate(new Date(data.date).toString().split(' ').slice(0,4).join(' '))
                 if (userState === data.creator.username || localStorage.getItem('username') === data.creator.username){
-                    dispatch(setEditId(data._id));
-                    console.log('uesueuuse')
+                    dispatch(setEditPostId(data._id));
                 }
-                console.log(data);
+                // console.log(data);
                 setIsLoading(false);
             } else {
                 router.push('/')
             }
         } catch(e: any) {
             dispatch(setError(e.status + e.message));
-            console.log(e);
+            // console.log(e);
         }
     }
 
-    console.log(profileUrl)
+    // console.log(profileUrl)
 
     return(
         <div className="flex justify-center">
@@ -82,13 +81,13 @@ export default function viewPost(){
                         <p className="text-gray-300 text-xs -ml-4">{`${date}`}</p>
                     </div>
                 </div>
-                <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "animate-pulse" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
+                <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "invisible" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
                 <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 items-center ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
                     {title}
                     {" "}
                     {editId ? <Link className="hover:bg-gray-600 transition-all duration-300 text-sm bg-gray-300 text-neutral-800 text-center px-2 py-1 rounded-lg" href={`/edit`}>edit</Link> : null}
                 </p>
-                <p id="post-description" className={isLoading ? "w-56 h-40 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
+                <p id="post-description" className={isLoading ? "w-56 h-40 -mt-1 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
                 <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>
             </div>
         </div>

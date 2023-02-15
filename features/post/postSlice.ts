@@ -14,8 +14,10 @@ export interface Post {
     sizing: Number,
     subCategory: String,
     title: String,
-    _id: String
+    _id: String,
+    date: Date,
 }
+
 interface GetProps {
     token: String;
     category: String | undefined | string[];
@@ -28,6 +30,7 @@ export interface PostState {
     error: String | undefined;
     subCategory: string | string[] | undefined;
     previous: null | string;
+    editPostId: String | null
 }
 
 const initialState: PostState = {
@@ -36,10 +39,11 @@ const initialState: PostState = {
     error: "",
     subCategory: undefined,
     previous: null,
+    editPostId: null
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(props: GetProps) => {
-    console.log(props)
+    // console.log(props)
     const { data } = await axios.get(`http://localhost:3001/posts/${props.category}/${props.subCategory}`, {
         headers: { "Authorization": "Bearer " + props.token }
     });
@@ -53,13 +57,16 @@ const postsSlice = createSlice({
         setSubCategory: (state: PostState, action: PayloadAction<string | undefined | string[]>) => {
             if (state.subCategory && state.subCategory !== action.payload){
                 state.subCategory = action.payload;
-                console.log("change");
+                // console.log("change");
                 state.posts = [];
                 state.status = 'idle';
             }
             state.subCategory = action.payload;
-            console.log(`${action.payload} + ${current(state)}`)
-            console.log(JSON.stringify(state, undefined, 2))
+            // console.log(`${action.payload} + ${current(state)}`)
+            // console.log(JSON.stringify(state, undefined, 2))
+        },
+        setEditPostId: (state: PostState, action: PayloadAction<String>) => {
+            state.editPostId = action.payload;
         }
     },
     extraReducers(builder){
@@ -82,6 +89,6 @@ const postsSlice = createSlice({
     }
 })
 
-export const { setSubCategory } = postsSlice.actions;
+export const { setSubCategory, setEditPostId } = postsSlice.actions;
 
 export default postsSlice.reducer;

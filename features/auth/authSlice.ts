@@ -7,7 +7,6 @@ export interface authSliceState {
     isSuccess: Boolean,
     isError: Boolean,
     error: String | null,
-    editId: null | String
 }
 
 const initialState: authSliceState = {
@@ -17,7 +16,6 @@ const initialState: authSliceState = {
     isSuccess: false,
     isError: false,
     error: null,
-    editId: null
 }
 
 const authSlice = createSlice({
@@ -32,13 +30,10 @@ const authSlice = createSlice({
         },
         setError: (state: authSliceState, action: PayloadAction<String | null>) => {
             state.error = action.payload;
-        },
-        setEditId: (state: authSliceState, action: PayloadAction<String>) => {
-            state.editId = action.payload;
         }
     }
 })
 
-export const { setUsername, setToken, setError, setEditId } = authSlice.actions;
+export const { setUsername, setToken, setError } = authSlice.actions;
 
 export default authSlice.reducer;
