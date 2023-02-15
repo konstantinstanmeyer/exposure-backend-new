@@ -59,8 +59,8 @@ export default function Sub(){
                     <div className={`bg-gray-300 hover:bg-gray-500 animate-pulse transition-all duration-200 w-64 h-[15rem] my-8 rounded-md relative flex justify-center items-center mx-auto`}/>
                 </>
                 : null}
-                {posts.length > 0 ? posts.map(post => 
-                    <div className={`bg-white w-64 ${post.sizing === 1 ? "h-[15rem]" : "h-[25rem] row-span-2"} my-8 rounded-md relative flex mx-auto justify-center`}>
+                {posts.length > 0 ? posts.map((post, i) => 
+                    <div key={i} className={`bg-white w-64 ${post.sizing === 1 ? "h-[15rem]" : "h-[25rem] row-span-2"} my-8 rounded-md relative flex mx-auto justify-center`}>
                         <img src={post.imageUrl} className="w-full h-2/5 rounded-md object-cover absolute" />
                         <div className="z-30 h-3/5 w-full flex flex-col bg-gray-300 rounded-br-md rounded-bl-md items-center mt-auto">
                             <div className="w-4/5 h-1/6 flex items-center">

@@ -25,10 +25,6 @@ export default function Navbar(){
         router.push('/login');
     }
 
-    async function checkAuth(){
-
-    }
-
     return(
         <div className="h-20 w-screen bg-neutral-800 flex flex-row items-center fixed top-0 z-40">
             <Link href="/">

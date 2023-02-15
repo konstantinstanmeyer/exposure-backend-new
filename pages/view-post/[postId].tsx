@@ -4,24 +4,9 @@ import { RootState, AppDispatch } from '@/src/store'
 import validate from '@/util/validateUser'
 import { useRouter } from "next/router";
 import { setError, setEditId } from "@/features/auth/authSlice";
+import { Post } from "@/types/global";
 import axios from "axios";
-
-interface Creator {
-    username: String,
-    imageUrl: string
-}
-
-interface Post {
-    _id: String,
-    title: String,
-    category: String,
-    subCategory: String,
-    description: String,
-    creator: Creator,
-    imageUrl: string,
-    sizing: Number,
-    date: Date
-}
+import Link from "next/link";
 
 export default function viewPost(){
     const [title, setTitle] = useState<String>("");
@@ -29,6 +14,9 @@ export default function viewPost(){
     const [description, setDescription] = useState<String>("");
     const [imageUrl, setImageUrl] = useState<string>("");
     const [profileUrl, setProfileUrl] = useState<string>("");
+    const [date, setDate] = useState<string | Date>("");
+    const [category, setCategory] = useState<String>("");
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const router = useRouter();
     const { query = {} } = router || {};
@@ -41,16 +29,20 @@ export default function viewPost(){
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        (async() => {
-            if(userState && tokenState){
-                fetchPost();
-            } else if(validate(dispatch)) {
-                fetchPost();
+        if(router.isReady){
+            if (postId){
+                if(userState && tokenState){
+                    fetchPost();
+                } else if(validate(dispatch)) {
+                    fetchPost();
+                } else {
+                    router.push('/login');
+                }
             } else {
-                router.push('/login');
+                router.push('/')
             }
-        })();
-    }, [postId])
+        }
+    }, [postId, router.isReady])
 
     async function fetchPost(){
         try {
@@ -61,10 +53,16 @@ export default function viewPost(){
                 setUsername(data.creator.username);
                 setProfileUrl(data.creator.imageUrl);
                 setImageUrl(data.imageUrl);
-                if (userState === data.creator.username){
-                    dispatch(setEditId(data.creator.username));
+                setCategory(data.category);
+                setDate(new Date(data.date).toString().split(' ').slice(0,4).join(' '))
+                if (userState === data.creator.username || localStorage.getItem('username') === data.creator.username){
+                    dispatch(setEditId(data._id));
+                    console.log('uesueuuse')
                 }
                 console.log(data);
+                setIsLoading(false);
+            } else {
+                router.push('/')
             }
         } catch(e: any) {
             dispatch(setError(e.status + e.message));
@@ -72,14 +70,26 @@ export default function viewPost(){
         }
     }
 
+    console.log(profileUrl)
+
     return(
         <div className="flex justify-center">
-            <div className="w-1/6 flex flex-col justify-center bg-neutral-400 rounded-lg mt-32 relative">
-                <div className="w-full px-4 mt-4">
-                    <img className="w-full h-full aspect-square object-cover bg-bottom rounded-md border-2 border-neutral-800" src={imageUrl} />
+            <div className="w-56 flex flex-col justify-center rounded-lg mt-32 relative">
+                <div className="w-full h-10 flex flex-row items-center">
+                    <img className={`w-8 mx-2 h-8 rounded-full bg-neutral-800 ${isLoading ? "animate-pulse" : null}`} src={profileUrl === "" || !profileUrl ? "/profile.png" : profileUrl} />
+                    <div className="flex flex-col items-center">
+                        <Link className="text-sm text-gray-300 font-bold" href={username === "" || !username ? "/" : `/profile/${username}`}>@{username}</Link>
+                        <p className="text-gray-300 text-xs -ml-4">{`${date}`}</p>
+                    </div>
                 </div>
-                <p>{username}</p>
-                <p>{}</p>
+                <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "animate-pulse" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
+                <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 items-center ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
+                    {title}
+                    {" "}
+                    {editId ? <Link className="hover:bg-gray-600 transition-all duration-300 text-sm bg-gray-300 text-neutral-800 text-center px-2 py-1 rounded-lg" href={`/edit`}>edit</Link> : null}
+                </p>
+                <p id="post-description" className={isLoading ? "w-56 h-40 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
+                <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>
             </div>
         </div>
     )

@@ -89,7 +89,7 @@ export default function ProfileView(){
                     <p className="w-full text-3xl font-bold dangrek h-1/5 items-center flex justify-center underline underline-offset-4">recent posts</p>
                     <div className="w-full h-4/5 bg-neutral-600 rounded-xl justify-center flex flex-wrap overflow-y-scroll">
                         {posts.length > 0 ? posts.map((post: any, i) =>
-                            <div className="w-5/6 h-1/3 bg-white my-5 rounded-lg flex">
+                        <div key={i + " " + post} className="w-5/6 h-1/3 bg-white my-5 rounded-lg flex">
                             <img className="h-[80%] aspect-square object-cover bg-bottom rounded-lg my-auto ml-3" src={post.imageUrl} />
                             <div className="w-3/4 ml-3 mr-2 h-[90%] my-auto overflow-y-scroll">
                                 <p className="dangrek font-bold text-lg">{post.title}</p>
