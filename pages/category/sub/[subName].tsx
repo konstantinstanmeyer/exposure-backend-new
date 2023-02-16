@@ -68,7 +68,7 @@ export default function Sub(){
                             </div>
                             <p className={`lg:text-base w-4/5 mx-auto ${post.sizing === 1 ? "h-3/6" : "h-3/5"} sm:text-xs pavanam text-gray-900/90`}>{post.description.length > 0 && post.sizing === 1 ? post.description.slice(0, 60) + "..." : post.sizing === 2 ? post.description.slice(0, 140) + "..." : null} <Link className="text-xs text-blue-800" href={`/view-post/${post._id}`}> more</Link></p>
                             <div className={`${post.sizing === 1 ? "h-2/6 [&>*]:mt-1" : "h-2/5 [&>*]:mt-2"} w-4/5 flex`}>
-                                    <img className="h-9 w-9 object-cover rounded-md" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80" />
+                                    <img className="h-9 w-9 object-cover rounded-md" src={post.creator.pictureUrl !== "" ? post.creator.pictureUrl : "/profile.png"} />
                                     <Link href={`/user/${post.creator.username}`} className="text-gray-900/90 text-sm h-fit ml-2">@{post.creator.username}</Link>
                             </div>
                         </div>

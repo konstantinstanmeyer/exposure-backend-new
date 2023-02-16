@@ -8,7 +8,7 @@ import uploadToS3 from '@/util/uploadToS3'
 import { addPost } from '@/features/post/postSlice';
 import { Post } from '@/features/post/postSlice';
 
-export default function Post(){
+export default function SubmitPost(){
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState<any>("");
     const [sub, setSub] = useState<any>("");
@@ -39,7 +39,7 @@ export default function Post(){
 
         setCategory(router.query.category);
         setSub(router.query.sub);
-    }, [])
+    }, [router.isReady])
 
     async function handleSubmit(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();

@@ -87,7 +87,7 @@ export default function viewPost(){
                     {" "}
                     {editId ? <Link className="hover:bg-gray-600 transition-all duration-300 text-sm bg-gray-300 text-neutral-800 text-center px-2 py-1 rounded-lg" href={`/edit`}>edit</Link> : null}
                 </p>
-                <p id="post-description" className={isLoading ? "w-56 h-40 -mt-1 animate-pulse bg-neutral-800" : "text-gray-300 text-md -mt-1 w-72 rounded-lg"}>{description}</p>
+                <p id="post-description" className={isLoading ? "w-56 h-40 -mt-1 animate-pulse bg-neutral-800" : "text-gray-300 text-md mt-1 w-72 rounded-lg"}>{description}</p>
                 <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>
             </div>
         </div>
