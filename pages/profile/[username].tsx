@@ -79,11 +79,11 @@ export default function ProfileView(){
 
     return (
         <div className="absolute h-full w-full">
-            {!edit ? <div className="mt-36 w-1/2 bg-neutral-700 h-1/2 mx-auto flex flex-row relative rounded-xl">
+            <div className="mt-36 w-1/2 bg-neutral-700 h-1/2 mx-auto flex flex-row relative rounded-xl">
                 <div className="w-1/3 bg-neutral-700 rounded-l-xl flex items-center flex-col relative">
                     <img className="w-2/3 rounded-full aspect-square object-cover bg-bottom mx-5 mt-auto" src={imageUrl ? imageUrl : "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"} />
                     <p className="w-fit mb-auto dangrek text-neutral-900 text-xl text-center">@{username}</p>
-                    {isUser ? <button onClick={() => setEdit(true)} className="absolute bottom-5 w-1/4 text-center rounded-lg text-neutral-400 dangrek bg-neutral-900 transition-auto duration-300 hover:bg-neutral-400 hover:text-neutral-900">edit</button> : null}
+                    {isUser ? <button onClick={() => router.push('/profile')} className="absolute bottom-5 w-1/4 text-center rounded-lg text-neutral-400 dangrek bg-neutral-900 transition-auto duration-300 hover:bg-neutral-400 hover:text-neutral-900">edit</button> : null}
                 </div>
                 <div className="w-2/3 bg-neutral-600 rounded-xl justify-center flex flex-col overflow-y-scroll">
                     <p className="w-full text-3xl font-bold dangrek h-1/5 items-center flex justify-center underline underline-offset-4">recent posts</p>
@@ -98,10 +98,7 @@ export default function ProfileView(){
                         </div>) : null}
                     </div>
                 </div>
-            </div> :
-            <div>
-
-            </div>}
+            </div>
             {isAdmin ?
             <Link href="/admin" className="absolute w-20 h-20 bg- z-40 top-32 right-8 flex items-center rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500">
                 <p className="dangrek text-xl text-center">admin view</p>
