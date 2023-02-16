@@ -30,7 +30,7 @@ export interface PostState {
     error: String | undefined;
     subCategory: string | string[] | undefined;
     previous: null | string;
-    editPostId: String | null
+    editPostId: String | null,
 }
 
 const initialState: PostState = {
@@ -39,7 +39,7 @@ const initialState: PostState = {
     error: "",
     subCategory: undefined,
     previous: null,
-    editPostId: null
+    editPostId: null,
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(props: GetProps) => {
@@ -67,6 +67,9 @@ const postsSlice = createSlice({
         },
         setEditPostId: (state: PostState, action: PayloadAction<String>) => {
             state.editPostId = action.payload;
+        },
+        addPost: (state: PostState, action: PayloadAction<Post>) => {
+            state.posts.concat(action.payload);
         }
     },
     extraReducers(builder){
@@ -89,6 +92,6 @@ const postsSlice = createSlice({
     }
 })
 
-export const { setSubCategory, setEditPostId } = postsSlice.actions;
+export const { setSubCategory, setEditPostId, addPost } = postsSlice.actions;
 
 export default postsSlice.reducer;

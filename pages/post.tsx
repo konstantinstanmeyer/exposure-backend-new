@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import uploadToS3 from '@/util/uploadToS3'
+import { addPost } from '@/features/post/postSlice';
+import { Post } from '@/features/post/postSlice';
 
 export default function Post(){
     const [title, setTitle] = useState("");
@@ -53,6 +55,10 @@ export default function Post(){
                 description: description,
                 imageUrl: "https://exposure-s3-bucket.s3.amazonaws.com/" + key
             }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}});
+
+            if (response.status === 200){
+                dispatch(addPost(response.data as Post))
+            }
 
             console.log(response);
         } catch(e: any){

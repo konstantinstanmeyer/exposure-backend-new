@@ -2,17 +2,17 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../src/store'
-import { setUsername, setToken } from '@/features/auth/authSlice'
+import { setUsername, setToken, setError } from '@/features/auth/authSlice'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 interface ProfileUrl {
-    username: String;
-    imageUrl: String;
+    username: string;
+    pictureUrl: string;
 }
 
 export default function Navbar(){
-    const [image, setImage] = useState<string>("");
+    const [imageUrl, setImageUrl] = useState<string>("");
     
     const dispatch = useDispatch<AppDispatch>();
 
@@ -33,9 +33,20 @@ export default function Navbar(){
     useEffect(() => {
         (
             async() => {
-                if (username) {
-                    const { data } = await axios.get<ProfileUrl>(`http://localhost:3001/profileImage`);
-                    
+                try {
+                    const token = localStorage.getItem('token');
+
+                    console.log(token);
+
+                    if (username) {
+                        const { data } = await axios.get<ProfileUrl>(`http://localhost:3001/imageUrl`, {
+                            headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
+                        });
+                        setImageUrl(data.pictureUrl);
+                    }
+                } catch(e: any){
+                    console.log(e)
+                    dispatch(setError(e.message))
                 }
             }
         )();
@@ -61,7 +72,7 @@ export default function Navbar(){
                     <p id="nav-text" className="text-black invert-[40%] text-center nav-text text-lg">suggest</p>
                 </Link>
                 <p onClick={() => handleLogout()} className={`text-black invert-[40%] ${username ? null : "opacity-0"} text-lg font-mono font-bold mx-5 hover:underline hover:cursor-pointer`} id="nav-text">log out</p>
-                <img onClick={() => router.push(`/profile/${username}`)} className="w-12 ml-5 mr-10 rounded-full hover:cursor-pointer" src="/profile.png" />
+                <img onClick={() => router.push(`/profile/${username}`)} className="w-12 ml-5 mr-10 rounded-full h-12 object-cover bg-center hover:cursor-pointer" src={imageUrl !== "" ? imageUrl : `/profile.png`} />
             </>
             }
         </div>
