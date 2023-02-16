@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { AppDispatch, RootState } from "@/src/store";
 import validate from "@/util/validateUser"
 import { setError } from '@/features/auth/authSlice'
+import { resetPosts } from '@/features/post/postSlice'
 
 export default function Category(){
     const [isLoading, setIsLoading] = useState<Boolean>(false);
@@ -22,6 +23,8 @@ export default function Category(){
 
     useEffect(() => {
         setIsLoading(true);
+
+        dispatch(resetPosts());
 
         if (router.isReady){
             if(username && token){

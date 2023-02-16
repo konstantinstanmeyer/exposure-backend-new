@@ -75,7 +75,7 @@ export default function viewPost(){
         <div className="flex justify-center">
             <div className="w-56 flex flex-col justify-center rounded-lg mt-32 relative">
                 <div className="w-full h-10 flex flex-row items-center">
-                    <img className={`w-8 mx-2 h-8 rounded-full bg-neutral-800 ${isLoading ? "animate-pulse" : null}`} src={profileUrl === "" || !profileUrl ? "/profile.png" : profileUrl} />
+                    <img className={`w-8 mx-2 h-8 rounded-full object-cover bg-neutral-800 ${isLoading ? "animate-pulse" : null}`} src={profileUrl === "" || !profileUrl ? "/profile.png" : profileUrl} />
                     <div className="flex flex-col items-center">
                         <Link className="text-sm text-gray-300 font-bold" href={username === "" || !username ? "/" : `/profile/${username}`}>@{username}</Link>
                         <p className="text-gray-300 text-xs -ml-4">{`${date}`}</p>
