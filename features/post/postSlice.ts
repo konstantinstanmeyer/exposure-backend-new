@@ -55,7 +55,7 @@ const postsSlice = createSlice({
     initialState,
     reducers: {
         setSubCategory: (state: PostState, action: PayloadAction<string | undefined | string[]>) => {
-            if (state.subCategory && state.subCategory !== action.payload){
+            if (state.subCategory && state.subCategory !== action.payload || state.posts.length === 0){
                 state.subCategory = action.payload;
                 // console.log("change");
                 state.posts = [];
@@ -68,8 +68,8 @@ const postsSlice = createSlice({
         setEditPostId: (state: PostState, action: PayloadAction<String>) => {
             state.editPostId = action.payload;
         },
-        addPost: (state: PostState, action: PayloadAction<Post>) => {
-            state.posts.concat(action.payload);
+        resetPosts: (state: PostState) => {
+            state.posts = [];
         }
     },
     extraReducers(builder){
@@ -92,6 +92,6 @@ const postsSlice = createSlice({
     }
 })
 
-export const { setSubCategory, setEditPostId, addPost } = postsSlice.actions;
+export const { setSubCategory, setEditPostId, resetPosts } = postsSlice.actions;
 
 export default postsSlice.reducer;

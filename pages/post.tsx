@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import uploadToS3 from '@/util/uploadToS3'
-import { addPost } from '@/features/post/postSlice';
+import { resetPosts } from '@/features/post/postSlice';
 import { Post } from '@/features/post/postSlice';
 
 export default function SubmitPost(){
@@ -57,7 +57,7 @@ export default function SubmitPost(){
             }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}});
 
             if (response.status === 200){
-                dispatch(addPost(response.data as Post))
+                dispatch(resetPosts())
             }
 
             console.log(response);
