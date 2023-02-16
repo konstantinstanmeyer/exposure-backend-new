@@ -27,7 +27,7 @@ export default function EditPost(){
             async() => {
                 setIsLoading(true);
                 try {
-                    if(postId){
+                    if(postId && username){
                         const { data } = await axios.get<Post>(`http://localhost:3001/post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
                         console.log(data);
                         setTitle(data.title as string);

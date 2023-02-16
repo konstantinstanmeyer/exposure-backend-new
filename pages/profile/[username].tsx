@@ -52,7 +52,7 @@ export default function ProfileView(){
                         setIsUser(true);
                     }
                     setEmail(response.data.email);
-                    setImageUrl(response.data.imageUrl);
+                    setImageUrl(response.data.pictureUrl);
                     setIsAdmin(response.data.admin);
                     setPosts(response.data.posts);
                     console.log(response.data);
