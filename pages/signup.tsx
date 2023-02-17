@@ -74,16 +74,25 @@ export default function Signup(){
 
     return (
         <div className="w-screen h-screen relative justify-center items-center flex">
-            <div className="bg-gray-400 w-1/5 h-1/2 rounded-lg flex flex-col justify-center relative">
+            <div className="bg-neutral-600 w-1/5 h-1/2 rounded-lg flex flex-col justify-center relative">
                 <div className="h-1/5 flex items-center justify-center">
                     <h2 className="text-center font-bold md:w-2/3 md:text-2xl sm:text-sm mt-5">Sign Up</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col justify-center w-4/5 mx-auto h-4/5">
-                    <input value={email} onChange={e => setEmail(e.target.value)} placeholder="email..." className="bg-gray-200 placeholder-gray-600 !outline-none m-2 rounded-md indent-3 h-1/6" />
-                    <input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="password..." className="bg-gray-200 placeholder-gray-600 m-2 !outline-none rounded-md indent-3 h-1/6" />
-                    <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} type="password" placeholder="confirm password..." className="bg-gray-200 placeholder-gray-600 m-2 !outline-none rounded-md indent-3 h-1/6" />
+                    <div className="w-5/6 my-4 mx-auto relative">
+                        <input value={email} onChange={e => setEmail(e.target.value)} placeholder="email..." className="bg-neutral-400 w-full placeholder-neutral-700 text-neutral-900 !outline-none rounded-md indent-3 h-10" />
+                        {/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email) ? null : <p className="absolute w-full text-center -bottom-5 text-xs text-red-500 font-bold">*must be a valid email*</p>}
+                    </div>
+                    <div className="w-5/6 my-4 mx-auto relative">
+                        <input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="password..." className="bg-neutral-400 w-full placeholder-neutral-700 text-neutral-900 !outline-none rounded-md indent-3 h-10" />
+                        {password.length > 4 ? null : <p className="absolute w-full text-center -bottom-5 text-xs text-red-500 font-bold">*5+ characters*</p>}
+                    </div>
+                    <div className="w-5/6 my-4 mx-auto relative">
+                        <input value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} type="password" placeholder="confirm password..." className="bg-neutral-400 placeholder-neutral-700 text-neutral-900 w-full !outline-none rounded-md indent-3 h-10" />
+                        {password.length > 4 && password === confirmPassword ? null : <p className="absolute w-full text-center -bottom-5 text-xs text-red-500 font-bold">*passwords must match*</p>}
+                    </div>
                     <div className="h-1/4 flex items-center justify-center">
-                        <button className="bg-gray-500 transition-all rounded-md duration-300 h-1/2 font-bold w-4/5 mx-auto hover:bg-gray-600 relative">
+                        <button className="bg-neutral-800 text-neutral-400 transition-all rounded-md duration-300 h-1/2 font-bold w-4/5 mx-auto hover:bg-neutral-700 relative">
                             Confirm
                         </button>
                     </div>

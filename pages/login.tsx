@@ -60,7 +60,7 @@ export default function Login(){
 
     return (
         <div className="w-screen h-screen relative justify-center items-center flex">
-            <div className="bg-gray-400 w-1/5 h-1/3 rounded-lg flex flex-col justify-center relative">
+            <div className="bg-neutral-500 w-1/5 h-1/3 rounded-lg flex flex-col justify-center relative">
                 <div className="h-1/3 flex items-center justify-center">
                     <h2 className="mx-auto text-center font-bold md:w-2/3 md:text-2xl sm:text-sm mt-2">Welcome to Exposure</h2>
                 </div>
@@ -68,7 +68,7 @@ export default function Login(){
                     <input value={email} onChange={e => setEmail(e.target.value)} placeholder="email..." className="bg-gray-200 placeholder-gray-600 !outline-none m-2 rounded-sm indent-2 h-1/4" />
                     <input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="password..." className="bg-gray-200 placeholder-gray-600 m-2 !outline-none rounded-sm indent-2 h-1/4" />
                     <div className="h-1/2 flex items-center justify-center">
-                        <button className="bg-gray-500 transition-all rounded-md duration-300 h-1/2 font-bold w-4/5 mx-auto hover:bg-gray-600 relative">
+                        <button className="bg-neutral-400 transition-all rounded-md duration-300 h-1/2 font-bold w-4/5 mx-auto hover:bg-neutral-600 relative">
                             Sign In
                         </button>
                     </div>

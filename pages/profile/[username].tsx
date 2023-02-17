@@ -52,7 +52,7 @@ export default function ProfileView(){
                     if (response.data.username === usernameState){
                         setIsUser(true);
                     }
-                    if (response.data.admin){
+                    if (usernameState === username && response.data.admin){
                         dispatch(setAdmin(true));
                     }
                     setEmail(response.data.email);

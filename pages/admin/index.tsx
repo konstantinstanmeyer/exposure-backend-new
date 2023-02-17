@@ -41,11 +41,12 @@ export default function Admin(){
         if (newCategory.length > 0 && key) {
             const response = await axios.post('http://localhost:3001/add-category', {
                 name: newCategory,
-                imageUrl: key,
+                imageUrl: "https://exposure-s3-bucket.s3.amazonaws.com/" + key,
             }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
             if (response.status === 200){
                 dispatch(setSuccess("Successfully added category!"));
                 setNewCategory("");
+                setEdit(null);
             }
         } else {
             dispatch(setError("Fill in all fields"))
@@ -60,13 +61,17 @@ export default function Admin(){
         if (newSubCategory.length > 0 && existingCategory.length > 0 && key) {
             const response = await axios.post('http://localhost:3001/add-sub-category', {
                 name: newSubCategory,
-                imageUrl: key,
+                imageUrl: "https://exposure-s3-bucket.s3.amazonaws.com/" + key,
                 category: existingCategory,
                 obscurity: obscurity
             }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}}) 
 
             if (response.status === 200){
                 dispatch(setSuccess("Successfully added sub-category!"));
+                setEdit(null);
+                setNewSubCategory("");
+                setExistingCategory("");
+                setObscurity(1);
             }
         }
     }
