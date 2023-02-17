@@ -88,7 +88,8 @@ export default function EditUser(){
                 <input onChange={e => setLocalUsername(e.target.value)} type="text" placeholder="username..." value={localUsername as string} className="!outline-none py-2 px-3 rounded-lg mt-2 mb-4 w-full bg-neutral-300"/>
                 {localUsername.length > 4 ? null : <p className="absolute w-full text-center -bottom-[0.15rem] text-xs text-red-500">*5+ characters*</p>}
             </div>
-            <img className={`${imageUrl === "" ? "invisible" : null} w-3/5 rounded-xl mx-auto aspect-square object-cover bg-center mt-4 mb-2`} src={imageUrl !== "" ? imageUrl : undefined} />
+            <img className={`${imageUrl === "" ? "hidden" : null} w-3/5 rounded-xl mx-auto aspect-square object-cover bg-center mt-4 mb-2`} src={imageUrl !== "" ? imageUrl : undefined} />
+            {imageUrl === "" ? <p className="w-fit mx-auto px-2 rounded-sm dangrek text-xl text-neutral-400 bg-neutral-800">no image</p> : null}
             <form className="w-1/2 flex flex-col justify-center mx-auto" onSubmit={handleSubmit}>
                 {isClicked ? 
                     <button onClick={() => setIsClicked(true)} className="w-full mx-auto rounded-md bg-neutral-400 hover:bg-neutral-700 transition-all font-bold text-sm my-2 duration-200">change image</button> :

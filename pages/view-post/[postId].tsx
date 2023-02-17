@@ -77,17 +77,17 @@ export default function viewPost(){
                 <div className="w-full h-10 flex flex-row items-center">
                     <img className={`w-8 mx-2 h-8 rounded-full object-cover bg-neutral-800 ${isLoading ? "animate-pulse" : null}`} src={profileUrl === "" || !profileUrl ? "/profile.png" : profileUrl} />
                     <div className="flex flex-col items-center">
-                        <Link className="text-sm text-gray-300 font-bold" href={username === "" || !username ? "/" : `/profile/${username}`}>@{username}</Link>
-                        <p className="text-gray-300 text-xs -ml-4">{`${date}`}</p>
+                        <Link className="text-sm text-gray-300 font-bold -ml-4" href={username === "" || !username ? "/" : `/profile/${username}`}>@{username}</Link>
+                        <p className="text-gray-300 text-xs">{`${date}`}</p>
                     </div>
                 </div>
                 <img className={`w-56 h-56 bg-neutral-800 ${isLoading ? "invisible" : null} aspect-square object-cover bg-bottom rounded-xl my-1`} src={imageUrl} />
-                <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 items-center ${isLoading ? "bg-neutral-800 my-1 animate-pulse" : null}`}>
+                <p className={`text-gray-300 font-bold rounded-lg text-lg min-w-10 items-center ${isLoading ? "bg-neutral-800 mt-1 animate-pulse" : null}`}>
                     {title}
                     {" "}
                     {editId ? <Link className="hover:bg-gray-600 transition-all duration-300 text-sm bg-gray-300 text-neutral-800 text-center px-2 py-1 rounded-lg" href={`/edit`}>edit</Link> : null}
                 </p>
-                <p id="post-description" className={isLoading ? "w-56 h-40 -mt-1 animate-pulse bg-neutral-800" : "text-gray-300 text-md mt-1 w-72 rounded-lg"}>{description}</p>
+                <p id="post-description" className={isLoading ? "w-56 h-40 -mt-1 animate-pulse bg-neutral-800" : "text-gray-300 text-md w-72 rounded-lg"}>{description}</p>
                 <Link href={`/category/${category}`} className="text-blue-500 text-sm">Discover this category</Link>
             </div>
         </div>
