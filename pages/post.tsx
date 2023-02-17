@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import uploadToS3 from '@/util/uploadToS3'
+import { resetPosts } from '@/features/post/postSlice';
+import { Post } from '@/features/post/postSlice';
 
-export default function Post(){
+export default function SubmitPost(){
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState<any>("");
     const [sub, setSub] = useState<any>("");
@@ -37,7 +39,7 @@ export default function Post(){
 
         setCategory(router.query.category);
         setSub(router.query.sub);
-    }, [])
+    }, [router.isReady])
 
     async function handleSubmit(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();
@@ -53,6 +55,10 @@ export default function Post(){
                 description: description,
                 imageUrl: "https://exposure-s3-bucket.s3.amazonaws.com/" + key
             }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}});
+
+            if (response.status === 200){
+                dispatch(resetPosts())
+            }
 
             console.log(response);
         } catch(e: any){

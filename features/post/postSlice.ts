@@ -20,8 +20,8 @@ export interface Post {
 
 interface GetProps {
     token: String;
-    category: String | undefined | string[];
-    subCategory: String | undefined | string[];
+    category: string | undefined | string[];
+    subCategory: string | undefined | string[];
 }
 
 export interface PostState {
@@ -30,7 +30,7 @@ export interface PostState {
     error: String | undefined;
     subCategory: string | string[] | undefined;
     previous: null | string;
-    editPostId: String | null
+    editPostId: String | null,
 }
 
 const initialState: PostState = {
@@ -39,7 +39,7 @@ const initialState: PostState = {
     error: "",
     subCategory: undefined,
     previous: null,
-    editPostId: null
+    editPostId: null,
 }
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(props: GetProps) => {
@@ -54,12 +54,11 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        setSubCategory: (state: PostState, action: PayloadAction<string | undefined | string[]>) => {
-            if (state.subCategory && state.subCategory !== action.payload){
+        setSubCategory: (state: PostState, action: PayloadAction<string | string[] | undefined>) => {
+            if (state.subCategory && state.subCategory !== action.payload || state.posts.length === 0){
                 state.subCategory = action.payload;
                 // console.log("change");
                 state.posts = [];
-                state.status = 'idle';
             }
             state.subCategory = action.payload;
             // console.log(`${action.payload} + ${current(state)}`)
@@ -67,12 +66,16 @@ const postsSlice = createSlice({
         },
         setEditPostId: (state: PostState, action: PayloadAction<String>) => {
             state.editPostId = action.payload;
+        },
+        resetPosts: (state: PostState) => {
+            state.posts = [];
         }
     },
     extraReducers(builder){
         builder
             .addCase(fetchPosts.pending, (state, action) => {
                 state.status = 'loading';
+                state.posts = [];
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
                 if (action.payload.posts.length >= 1){
@@ -89,6 +92,6 @@ const postsSlice = createSlice({
     }
 })
 
-export const { setSubCategory, setEditPostId } = postsSlice.actions;
+export const { setSubCategory, setEditPostId, resetPosts } = postsSlice.actions;
 
 export default postsSlice.reducer;

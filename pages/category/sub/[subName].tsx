@@ -26,19 +26,16 @@ export default function Sub(){
     useEffect(() => {
         if (clientLoaded && router.isReady){
             const subCategoryParam = router.query.subName;
-            if(subCategory !== subCategoryParam){
-                dispatch(setSubCategory(subCategoryParam))
-                if (posts.length < 1 && status !== "none"){
-                    if(username && token){
-                        dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                        console.log("reached")
-                    } else if(validate(dispatch)){
-                        dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                    }
+            if(subCategory !== subCategoryParam && status !== "none" && posts.length < 1){
+                if(username && token){
+                    dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                    console.log("reached")
+                } else if(validate(dispatch)){
+                    dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
                 }
             }
         }
-    }, [clientLoaded, router.isReady, posts])
+    }, [clientLoaded, router.isReady])
 
     return (
         <div className="relative">
@@ -61,15 +58,15 @@ export default function Sub(){
                 : null}
                 {posts.length > 0 ? posts.map((post, i) => 
                     <div key={i} className={`bg-white w-64 ${post.sizing === 1 ? "h-[15rem]" : "h-[25rem] row-span-2"} my-8 rounded-md relative flex mx-auto justify-center`}>
-                        <img src={post.imageUrl} className="w-full h-2/5 rounded-md object-cover absolute" />
+                        <img src={post.imageUrl} className="w-full h-2/5 rounded-t-md object-cover absolute" />
                         <div className="z-30 h-3/5 w-full flex flex-col bg-gray-300 rounded-br-md rounded-bl-md items-center mt-auto">
                             <div className="w-4/5 h-1/6 flex items-center">
                                 <p className="w-full mt-2 font-bold text-lg text-gray-900 dangrek mx-auto">{post.title}</p>
                             </div>
                             <p className={`lg:text-base w-4/5 mx-auto ${post.sizing === 1 ? "h-3/6" : "h-3/5"} sm:text-xs pavanam text-gray-900/90`}>{post.description.length > 0 && post.sizing === 1 ? post.description.slice(0, 60) + "..." : post.sizing === 2 ? post.description.slice(0, 140) + "..." : null} <Link className="text-xs text-blue-800" href={`/view-post/${post._id}`}> more</Link></p>
                             <div className={`${post.sizing === 1 ? "h-2/6 [&>*]:mt-1" : "h-2/5 [&>*]:mt-2"} w-4/5 flex`}>
-                                    <img className="h-9 w-9 object-cover rounded-md" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80" />
-                                    <Link href={`/user/${post.creator.username}`} className="text-gray-900/90 text-sm h-fit ml-2">@{post.creator.username}</Link>
+                                    <img className="h-9 w-9 object-cover rounded-md" src={post.creator.pictureUrl !== "" ? post.creator.pictureUrl : "/profile.png"} />
+                                    <Link href={`/user/${post.creator.username}`} className="text-gray-900/90 dangrek font-bold text-sm h-fit ml-2">@{post.creator.username}</Link>
                             </div>
                         </div>
                     </div>
