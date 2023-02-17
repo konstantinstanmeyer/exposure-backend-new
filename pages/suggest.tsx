@@ -3,6 +3,7 @@ import { AppDispatch, RootState } from "@/src/store";
 import { ChangeEvent, useEffect, useState } from "react";
 import validate from '@/util/validateUser';
 import { useRouter } from 'next/router'
+import { setSuccess } from '@/features/auth/authSlice';
 import axios from 'axios';
 
 export default function Suggest(){
@@ -33,19 +34,30 @@ export default function Suggest(){
 
         try {
             if (type === "Category" && newCategory !== ""){
-                const { data } = await axios.post('http://localhost:3001/suggestion', {
+                const response = await axios.post('http://localhost:3001/suggestion', {
                     username: userState,
                     newCategory: newCategory,
                     type: type
                 }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}})
+
+                if (response.status === 200){
+                    setNewCategory("");
+                    setSubCategory("");
+                    setExistingCategory("");
+                    dispatch(setSuccess("Suggestion successfully added"));
+                }
             } else if(type === "SubCategory" && existingCategory !== "" && subCategory !== "" && obscurity >=1 && obscurity <= 5) {
-                const { data } = await axios.post('http://localhost:3001/suggestion', {
+                const response = await axios.post('http://localhost:3001/suggestion', {
                     username: userState,
                     newSubCategory: subCategory,
                     existingCategory: existingCategory,
                     obscurity: obscurity,
                     type: type
                 }, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')}});
+
+                if (response.status === 200){
+                    router.push('/');
+                }
             } else if(obscurity > 6 || obscurity < 1) {
                 setError("Obscurity must be between 1 and 5");
             } else {

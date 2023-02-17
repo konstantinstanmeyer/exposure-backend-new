@@ -2,7 +2,13 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 export interface Suggestion {
-
+    username: string;
+    existingCategory: string | null;
+    newCategory: string | null;
+    newSubCategory: string | null;
+    obscurity: number;
+    type: string;
+    _id: string;
 }
 
 export interface AdminState {
@@ -41,7 +47,7 @@ const adminSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchSuggestions.fulfilled, (state, action) => {
-                state.suggestions
+                state.suggestions = action.payload;
             })
             .addCase(fetchSuggestions.rejected, (state, action) => {
                 state.status = 'rejected';
