@@ -32,6 +32,13 @@ export const fetchSuggestions = createAsyncThunk('admin/fetchSuggestions', async
     return response.data;
 })
 
+export const deleteSuggestion = createAsyncThunk('admin/deleteSuggestion', async(id: string) => {
+    const response = await axios.get(`http://localhost:3001/admin/suggestion/${id}`, {
+        headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
+    })
+    return response.data;
+})
+
 
 const adminSlice = createSlice({
     name: 'admin',
@@ -50,6 +57,18 @@ const adminSlice = createSlice({
                 state.suggestions = action.payload;
             })
             .addCase(fetchSuggestions.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.error = action.error?.message;
+            })
+            .addCase(deleteSuggestion.pending, (state, action) => {
+                state.status = 'pending';
+            })
+            .addCase(deleteSuggestion.fulfilled, (state, action) => {
+                state.status = 'success';
+                console.log(action.payload);
+                state.suggestions = [...state.suggestions.filter(suggestion => suggestion._id !== action.payload.id)];
+            })
+            .addCase(deleteSuggestion.rejected, (state,action) => {
                 state.status = 'rejected';
                 state.error = action.error?.message;
             })
