@@ -24,9 +24,9 @@ export default function Home() {
   useEffect(() => {
     setIsLoading(true);
 
-    if(username && token) {
+    if(username && token && categories.length < 1) {
       getCategories();
-    } else if (validate(dispatch)) {
+    } else if (validate(dispatch) && categories.length < 1) {
       getCategories();
     } else {
       router.push('/login');
@@ -38,7 +38,7 @@ export default function Home() {
   }, [])
 
   function getCategories(){
-    axios.get<Category[]>('http://localhost:3001/categories', { headers: { "Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+    axios.get<Category[]>(process.env.NEXT_PUBLIC_DB_URL + 'categories', { headers: { "Authorization" : `Bearer ${localStorage.getItem('token')}`}})
     .then(res => {
       setCategories(res.data);
       setIsLoading(false);

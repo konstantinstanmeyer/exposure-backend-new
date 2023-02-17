@@ -48,7 +48,7 @@ export default function SubmitPost(){
             const key = await uploadToS3(e);
             // console.log(key);
 
-            const response = await axios.post('http://localhost:3001/post', {
+            const response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + 'post', {
                 title: title,
                 category: category,
                 subCategory: sub,

@@ -26,14 +26,14 @@ const initialState: AdminState = {
 }
 
 export const fetchSuggestions = createAsyncThunk('admin/fetchSuggestions', async() => {
-    const response = await axios.get('http://localhost:3001/admin/suggestions', { 
+    const response = await axios.get(process.env.NEXT_PUBLIC_DB_URL + 'admin/suggestions', { 
         headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
     });
     return response.data;
 })
 
 export const deleteSuggestion = createAsyncThunk('admin/deleteSuggestion', async(id: string) => {
-    const response = await axios.get(`http://localhost:3001/admin/suggestion/${id}`, {
+    const response = await axios.get(process.env.NEXT_PUBLIC_DB_URL + `admin/suggestion/${id}`, {
         headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
     })
     return response.data;

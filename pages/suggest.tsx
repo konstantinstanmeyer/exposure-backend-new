@@ -34,7 +34,7 @@ export default function Suggest(){
 
         try {
             if (type === "Category" && newCategory !== ""){
-                const response = await axios.post('http://localhost:3001/suggestion', {
+                const response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + 'suggestion', {
                     username: userState,
                     newCategory: newCategory,
                     type: type
@@ -47,7 +47,7 @@ export default function Suggest(){
                     dispatch(setSuccess("Suggestion successfully added"));
                 }
             } else if(type === "SubCategory" && existingCategory !== "" && subCategory !== "" && obscurity >=1 && obscurity <= 5) {
-                const response = await axios.post('http://localhost:3001/suggestion', {
+                const response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + 'suggestion', {
                     username: userState,
                     newSubCategory: subCategory,
                     existingCategory: existingCategory,
