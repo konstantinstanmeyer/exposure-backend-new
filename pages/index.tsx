@@ -24,9 +24,9 @@ export default function Home() {
   useEffect(() => {
     setIsLoading(true);
 
-    if(username && token) {
+    if(username && token && categories.length < 1) {
       getCategories();
-    } else if (validate(dispatch)) {
+    } else if (validate(dispatch) && categories.length < 1) {
       getCategories();
     } else {
       router.push('/login');
