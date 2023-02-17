@@ -45,6 +45,7 @@ export default function Admin(){
             }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
             if (response.status === 200){
                 dispatch(setSuccess("Successfully added category!"));
+                setNewCategory("");
             }
         } else {
             dispatch(setError("Fill in all fields"))
@@ -58,7 +59,7 @@ export default function Admin(){
 
         if (newSubCategory.length > 0 && existingCategory.length > 0 && key) {
             const response = await axios.post('http://localhost:3001/add-sub-category', {
-                name: newCategory,
+                name: newSubCategory,
                 imageUrl: key,
                 category: existingCategory,
                 obscurity: obscurity
@@ -87,10 +88,11 @@ export default function Admin(){
     return (
         <div className="flex flex-col justify-center mt-32">
             {!edit ? <>
-            (<div className="flex w-56 mx-auto justify-center space-x-4 mb-8">
+            (<div className="flex w-56 mx-auto justify-center space-x-4 -mt-5 mb-8">
                 <button onClick={() => setType("Category")} className={`bg-neutral-700 rounded-lg px-2 py-1 dangrek ${type === "Category" ? "bg-red-500" : "bg-neutral-700"}`}>categories</button>
                 <button onClick={() => setType("SubCategory")} className={`bg-neutral-700 rounded-lg px-2 py-1 dangrek ${type === "SubCategory" ? "bg-red-500" : "bg-neutral-700"}`}>sub-categories</button>
             </div>
+            <button onClick={() => setEdit(type)} className="bg-neutral-700 mx-auto text-neutral-300 dangrek w-56 h-12 rounded-lg flex justify-center items-center mb-4 hover:bg-neutral-800 hover:text-neutral-400 transition-all duration-300">add own</button>
             {displayedSuggestions.map(suggestion =>
                 <>
                     {suggestion.existingCategory ? 
