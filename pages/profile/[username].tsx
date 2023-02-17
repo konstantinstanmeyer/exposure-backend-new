@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from '@/src/store';
 import { useDispatch, useSelector } from "react-redux";
 import validate from "@/util/validateUser";
+import { setAdmin } from "@/features/admin/adminSlice";
 import axios from "axios";
 import Link from 'next/link';
 
@@ -17,7 +18,6 @@ export default function ProfileView(){
     const [posts, setPosts] = useState<Post[]>([]);
     const [email, setEmail] = useState<string>("");
     const [imageUrl, setImageUrl] = useState<string>("");
-    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [edit, setEdit] = useState<boolean>(false);
 
@@ -29,6 +29,7 @@ export default function ProfileView(){
 
     const usernameState = useSelector((state: RootState) =>  state.auth.username);
     const tokenState = useSelector((state: RootState) =>  state.auth.token);
+    const isAdmin = useSelector((state: RootState) => state.admin.isAdmin);
 
     useEffect(() => {
         setIsLoading(true);
@@ -51,9 +52,11 @@ export default function ProfileView(){
                     if (response.data.username === usernameState){
                         setIsUser(true);
                     }
+                    if (response.data.admin){
+                        dispatch(setAdmin(true));
+                    }
                     setEmail(response.data.email);
                     setImageUrl(response.data.pictureUrl);
-                    setIsAdmin(response.data.admin);
                     setPosts(response.data.posts);
                     console.log(response.data);
                     setIsLoading(false);

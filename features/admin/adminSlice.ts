@@ -41,7 +41,7 @@ const adminSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchSuggestions.fulfilled, (state, action) => {
-                state.suggestions
+                console.log(action.payload);
             })
             .addCase(fetchSuggestions.rejected, (state, action) => {
                 state.status = 'rejected';
