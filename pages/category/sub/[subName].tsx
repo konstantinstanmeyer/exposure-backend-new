@@ -1,41 +1,32 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/src/store';
 import validate from "@/util/validateUser"
-import { fetchPosts, setSubCategory } from '@/features/post/postSlice';
+import { fetchPosts } from '@/features/post/postSlice';
 
 export default function Sub(){
-    const [clientLoaded, setClientLoaded] = useState<boolean>(false);
-
     const username = useSelector((state: RootState) =>  state.auth.username);
     const token = useSelector((state: RootState) =>  state.auth.token);
     const posts = useSelector((state: RootState) => state.posts.posts);
     const status = useSelector((state: RootState) => state.posts.status);
-    const subCategory = useSelector((state: RootState) => state.posts.subCategory);
 
     const dispatch = useDispatch<AppDispatch>();
 
     const router = useRouter();
 
     useEffect(() => {
-        setClientLoaded(true);
-    }, [])
-
-    useEffect(() => {
-        if (clientLoaded && router.isReady){
-            const subCategoryParam = router.query.subName;
-            if(subCategory !== subCategoryParam && status !== "none" && posts.length < 1){
-                if(username && token){
-                    dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                    console.log("reached")
-                } else if(validate(dispatch)){
-                    dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
-                }
+        if (router.isReady){
+            if(username && token){
+                dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
+                console.log("reached")
+            } else if (validate(dispatch)){
+                console.log(posts)
+                dispatch(fetchPosts({ token: localStorage.getItem('token') as string, category: router.query.category, subCategory: router.query.subName }));
             }
         }
-    }, [clientLoaded, router.isReady])
+    }, [router.isReady])
 
     return (
         <div className="relative">
