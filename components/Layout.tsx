@@ -1,6 +1,7 @@
 import Navbar from './Navbar';
 import Error from './Error';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
+import Success from './Success';
 
 export default function Layout({ children }: PropsWithChildren<{}>){
     return (
@@ -8,6 +9,7 @@ export default function Layout({ children }: PropsWithChildren<{}>){
             <Navbar />
                 <main>{children}</main>
             <Error />
+            <Success />
         </>
     )
 }

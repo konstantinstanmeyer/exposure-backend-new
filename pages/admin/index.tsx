@@ -2,6 +2,7 @@ import { AppDispatch, RootState } from "@/src/store"
 import { useEffect } from "react"
 import { useSelector , useDispatch} from "react-redux"
 import { fetchSuggestions } from "@/features/admin/adminSlice";
+import { useRouter } from "next/router";
 
 export default function Admin(){
     const isAdmin = useSelector((state: RootState) => state.admin.isAdmin);
@@ -11,11 +12,17 @@ export default function Admin(){
 
     const dispatch = useDispatch<AppDispatch>();
 
+    const router = useRouter();
+
     useEffect(() => {
         if(username && token && isAdmin){
             dispatch(fetchSuggestions());
+        } else {
+            router.push('/');
         }
     }, [])
+
+    console.log(suggestions);
 
     return (
         <div className="">

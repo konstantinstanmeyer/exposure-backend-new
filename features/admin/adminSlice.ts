@@ -2,7 +2,12 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 export interface Suggestion {
-
+    username: string;
+    existingCategory: string | null;
+    newCategory: string | null;
+    newSubCategory: string | null;
+    obscurity: number;
+    type: string
 }
 
 export interface AdminState {
