@@ -7,7 +7,8 @@ export interface Suggestion {
     newCategory: string | null;
     newSubCategory: string | null;
     obscurity: number;
-    type: string
+    type: string;
+    _id: string;
 }
 
 export interface AdminState {
@@ -46,7 +47,7 @@ const adminSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(fetchSuggestions.fulfilled, (state, action) => {
-                console.log(action.payload);
+                state.suggestions = action.payload;
             })
             .addCase(fetchSuggestions.rejected, (state, action) => {
                 state.status = 'rejected';
