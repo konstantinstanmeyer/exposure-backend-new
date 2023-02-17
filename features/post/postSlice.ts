@@ -75,10 +75,10 @@ const postsSlice = createSlice({
         builder
             .addCase(fetchPosts.pending, (state, action) => {
                 state.status = 'loading';
+                state.posts = [];
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
                 if (action.payload.posts.length >= 1){
-                    state.posts = [];
                     state.posts = action.payload.posts;
                     state.status = 'success';
                 } else {

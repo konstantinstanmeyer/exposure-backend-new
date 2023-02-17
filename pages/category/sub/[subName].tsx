@@ -35,7 +35,7 @@ export default function Sub(){
                 }
             }
         }
-    }, [clientLoaded, router.isReady, posts])
+    }, [clientLoaded, router.isReady])
 
     return (
         <div className="relative">

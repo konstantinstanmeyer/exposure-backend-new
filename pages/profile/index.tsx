@@ -14,7 +14,6 @@ interface UserInfo{
 }
 
 export default function EditUser(){
-    const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [file, setFile] = useState<Boolean>(false);
     const [imageUrl, setImageUrl] = useState<string>("");
     const [localUsername, setLocalUsername] = useState<string>("");
@@ -30,7 +29,6 @@ export default function EditUser(){
     const tokenState = useSelector((state: RootState) => state.auth.token)
 
     useEffect(() => {
-        setIsLoading(true);
         (
             async() => {
                 if(usernameState && tokenState) {
