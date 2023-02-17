@@ -29,14 +29,14 @@ export default function Category(){
         if (router.isReady){
             if(username && token){
                 (async() => {
-                    const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${obscurity}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
+                    const { data } = await axios.get(process.env.NEXT_PUBLIC_DB_URL + `sub-categories/${router.query.categoryName}/${obscurity}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
                     setSubs(data.subs);
                     setIsLoading(false);
                 })()
             } else if (validate(dispatch)) {
                 (async() => {
                     try {
-                        const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${obscurity}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
+                        const { data } = await axios.get(process.env.NEXT_PUBLIC_DB_URL + `sub-categories/${router.query.categoryName}/${obscurity}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
                         setSubs(data.subs);
                         setIsLoading(false);
                     } catch(e: any){
@@ -52,31 +52,6 @@ export default function Category(){
     useEffect(() => {
         setPage(1);
     }, [obscurity])
-
-    async function fetch(){
-        const { data } = await axios.get(`http://localhost:3001/sub-categories/${router.query.categoryName}/${page}`, { headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`} });
-        console.log(data);
-    }
-
-    async function submitCategory(e: ChangeEvent<HTMLFormElement>){
-        e.preventDefault();
-
-        const response = await axios.post('http://localhost:3001/add-category', {
-            // name: category,
-            // imageUrl: imageUrl,
-        }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
-    }
-
-    async function submitSubCategory(e: ChangeEvent<HTMLFormElement>){
-        e.preventDefault();
-
-        const response = await axios.post('http://localhost:3001/add-sub-category', {
-            // name: category,
-            // imageUrl: imageUrl,
-            // category: "Farming",
-            // obscurity: obscurity
-        }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
-    }
 
     const filteredSubs = subs.filter((sub) => sub.obscurity === obscurity);
 

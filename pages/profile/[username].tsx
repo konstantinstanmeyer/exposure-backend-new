@@ -47,7 +47,7 @@ export default function ProfileView(){
     async function fetchUser(){
         try {
             if (username){
-                const response: any = await axios.get(`http://localhost:3001/profile/${username}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}});
+                const response: any = await axios.get(process.env.NEXT_PUBLIC_DB_URL + `profile/${username}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}});
                 if (response.status === 200) {
                     if (response.data.username === usernameState){
                         setIsUser(true);

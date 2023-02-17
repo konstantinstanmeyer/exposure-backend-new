@@ -39,7 +39,7 @@ export default function Admin(){
         const key = await uploadToS3(e);
 
         if (newCategory.length > 0 && key) {
-            const response = await axios.post('http://localhost:3001/add-category', {
+            const response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + 'add-category', {
                 name: newCategory,
                 imageUrl: "https://exposure-s3-bucket.s3.amazonaws.com/" + key,
             }, { headers: { "Authorization": "Bearer "+ localStorage.getItem('token')}})
@@ -59,7 +59,7 @@ export default function Admin(){
         const key = await uploadToS3(e);
 
         if (newSubCategory.length > 0 && existingCategory.length > 0 && key) {
-            const response = await axios.post('http://localhost:3001/add-sub-category', {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_DB_URL}/add-sub-category`, {
                 name: newSubCategory,
                 imageUrl: "https://exposure-s3-bucket.s3.amazonaws.com/" + key,
                 category: existingCategory,

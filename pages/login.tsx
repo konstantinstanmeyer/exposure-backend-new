@@ -35,7 +35,7 @@ export default function Login(){
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:3001/login", {
+            const response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + "login", {
                 email: email,
                 password: password
             })

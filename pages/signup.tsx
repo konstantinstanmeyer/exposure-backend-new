@@ -43,7 +43,7 @@ export default function Signup(){
         if(password === "" || email === ""){
             return dispatch(setError("All fields must be filled"));
         }else if(password === confirmPassword){
-            response = await axios.post("http://localhost:3001/signup", {
+            response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + "signup", {
             email: email,
             password: password
             })

@@ -34,12 +34,8 @@ export default function Navbar(){
         (
             async() => {
                 try {
-                    const token = localStorage.getItem('token');
-
-                    console.log(token);
-
                     if (username) {
-                        const { data } = await axios.get<ProfileUrl>(`http://localhost:3001/imageUrl`, {
+                        const { data } = await axios.get<ProfileUrl>(process.env.NEXT_PUBLIC_DB_URL + 'imageUrl', {
                             headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
                         });
                         setImageUrl(data.pictureUrl);

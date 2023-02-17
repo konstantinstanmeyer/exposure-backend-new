@@ -44,7 +44,7 @@ const initialState: PostState = {
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async(props: GetProps) => {
     // console.log(props)
-    const { data } = await axios.get(`http://localhost:3001/posts/${props.category}/${props.subCategory}`, {
+    const { data } = await axios.get(process.env.NEXT_PUBLIC_DB_URL + `posts/${props.category}/${props.subCategory}`, {
         headers: { "Authorization": "Bearer " + props.token }
     });
     return data;

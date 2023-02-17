@@ -28,7 +28,7 @@ export default function EditPost(){
                 setIsLoading(true);
                 try {
                     if(postId && username){
-                        const { data } = await axios.get<Post>(`http://localhost:3001/post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
+                        const { data } = await axios.get<Post>(process.env.NEXT_PUBLIC_DB_URL + `/post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
                         setTitle(data.title as string);
                         setDescription(data.description as string);
                         setImageUrl(data.imageUrl as string);
@@ -51,7 +51,7 @@ export default function EditPost(){
         const token = localStorage.getItem('token');
 
         if (title !== "" && username && token){
-            const response = await axios.post(`http://localhost:3001/edit/${postId}`, {
+            const response = await axios.post(process.env.NEXT_PUBLIC_DB_URL + `edit/${postId}`, {
                 title: title,
                 username: username,
                 imageUrl: key ? "https://exposure-s3-bucket.s3.amazonaws.com/" + key : imageUrl,

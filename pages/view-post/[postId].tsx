@@ -47,7 +47,7 @@ export default function viewPost(){
     async function fetchPost(){
         try {
             if (postId){
-                const { data } = await axios.get<Post>(`http://localhost:3001/post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
+                const { data } = await axios.get<Post>(process.env.NEXT_PUBLIC_DB_URL + `post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
                 setTitle(data.title);
                 setDescription(data.description);
                 setUsername(data.creator.username);
