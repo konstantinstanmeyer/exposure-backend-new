@@ -28,7 +28,7 @@ export default function EditPost(){
                 setIsLoading(true);
                 try {
                     if(postId && username){
-                        const { data } = await axios.get<Post>(process.env.NEXT_PUBLIC_DB_URL + `/post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
+                        const { data } = await axios.get<Post>(process.env.NEXT_PUBLIC_DB_URL + `post/${postId}`, { headers: { "Authorization": "Bearer " + localStorage.getItem('token')} } );
                         setTitle(data.title as string);
                         setDescription(data.description as string);
                         setImageUrl(data.imageUrl as string);
