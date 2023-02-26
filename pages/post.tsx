@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '../src/store'
 import validate from '@/util/validateUser';
 import uploadToS3 from '@/util/uploadToS3'
 import { resetPosts } from '@/features/post/postSlice';
-import { Post } from '@/features/post/postSlice';
+import Loading from '@/components/Loading';
 
 export default function SubmitPost(){
     const [title, setTitle] = useState("");
@@ -14,6 +14,7 @@ export default function SubmitPost(){
     const [sub, setSub] = useState<any>("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState<null | String>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -43,6 +44,7 @@ export default function SubmitPost(){
 
     async function handleSubmit(e: ChangeEvent<HTMLFormElement>){
         e.preventDefault();
+        setIsLoading(true);
 
         try {
             const key = await uploadToS3(e);
@@ -58,17 +60,22 @@ export default function SubmitPost(){
 
             if (response.status === 200){
                 dispatch(resetPosts())
+                console.log("yes")
+                router.push(`/category/sub/${sub}?category=${category}`)
+            } else {
+                setIsLoading(false);
             }
 
             console.log(response);
         } catch(e: any){
             setError(e.message);
+            setIsLoading(false);
         }
     }
 
     return (
         <div className="">
-            <form className="mt-32 w-1/4 mx-auto flex flex-col justify-center" onSubmit={handleSubmit}>
+            {!isLoading ? <form className="mt-32 w-1/4 mx-auto flex flex-col justify-center" onSubmit={handleSubmit}>
                 <div className="w-1/3 mx-auto relative my-8 flex justify-center">
                     <input className="rounded-md indent-3 py-2 !outline-none" type="text" value={title} onChange={e => setTitle(e.target.value)} name="category" />
                     <p className="absolute -top-[1.3rem] left-[0.15rem] text-sm text-gray-300">title</p>
@@ -89,7 +96,9 @@ export default function SubmitPost(){
                     <input className="mx-auto w-3/4 text-gray-300 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-500 file:text-gray-900" type="file" accept="image/jpeg image/png" name="file"/>
                 </div>
                 <button className="w-1/5 py-1 rounded-full mx-auto my-8 text-md bg-gray-500 hover:bg-gray-700 transition-all duration-300" type="submit">submit</button>
-            </form>
+            </form>: 
+            <Loading />
+            }
             {error ? 
             <div className="fixed w-1/5 bg-red-700 rounded-lg h-fit z-40 mx-auto left-[40%] bottom-10">
                 <p className="text-center mx-6 py-3 font-bold font-mono select-none">{error}</p>
