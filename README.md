@@ -1,38 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Visit the deployed site [here](http://keyboard-typing.com/)
 
-## Getting Started
+Watch the live Demo [here](https://www.google.com/) (coming soon)
 
-First, run the development server:
+## About The Project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+<img width="70%" src="https://cdn.discordapp.com/attachments/1028812502835925052/1051195650227843082/Screen_Shot_2022-11-16_at_6.22.46_PM.png" alt="keyboard-app" />
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Keyboard-App is a simple website that lets users record their typing speeds against multiple gamemode and word-counts. They can then compare those scores with other users on the global leaderboard
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Functionalities
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Users can select between random, quote, or bacon (Bacon-Ipsum) mode and select different word-counts to practice against
+- Users can navigate to the leaderboard to view scores and sort by mode and word-count
+- Users can update privacy settings such as profile visiblity, username anonymity, or a hidden origin
+- A user can view their own or other users' profiles, and can analyze a chart of their past scores
+- A user can update their username, email, and profile picture
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Built With
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- React
+- Tailwind
+- Ruby on Rails
+- PostgreSQL
 
-## Learn More
+### Deployment Tools
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Google Cloud Ubuntu Instance
+- NGINX
