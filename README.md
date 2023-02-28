@@ -21,6 +21,7 @@ Keyboard-App is a simple website that lets users record their typing speeds agai
 - React
 - Tailwind
 - Ruby on Rails
+- ActiveStorage
 - PostgreSQL
 
 ### Deployment Tools
